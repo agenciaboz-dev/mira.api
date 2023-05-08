@@ -6,5 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 const express_1 = __importDefault(require("express"));
 const login_1 = __importDefault(require("./src/login"));
+const signup_1 = __importDefault(require("./src/signup"));
 exports.router = express_1.default.Router();
 exports.router.use("/login", login_1.default);
+exports.router.use("/signup", signup_1.default);
