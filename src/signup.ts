@@ -5,6 +5,7 @@ const prisma = new PrismaClient()
 
 router.post("/", async (request: Request, response: Response) => {
     const data = request.body
+    data.username = data.email.split("@")[0]
     console.log(data)
 
     try {
@@ -13,10 +14,10 @@ router.post("/", async (request: Request, response: Response) => {
                 email: data.email,
                 name: data.name,
                 password: data.password,
-                username: data.email.split("@")[0],
+                username: data.username,
             },
         })
-
+        console.log(user)
         response.json(user)
     } catch (error) {
         console.log(error)

@@ -18,6 +18,7 @@ const router = express_1.default.Router();
 const prisma = new client_1.PrismaClient();
 router.post("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const data = request.body;
+    data.username = data.email.split("@")[0];
     console.log(data);
     try {
         const user = prisma.users.create({
@@ -25,9 +26,10 @@ router.post("/", (request, response) => __awaiter(void 0, void 0, void 0, functi
                 email: data.email,
                 name: data.name,
                 password: data.password,
-                username: data.email.split("@")[0],
+                username: data.username,
             },
         });
+        console.log(user);
         response.json(user);
     }
     catch (error) {
