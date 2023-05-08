@@ -7,16 +7,21 @@ router.post("/", async (request: Request, response: Response) => {
     const data = request.body
     console.log(data)
 
-    const user = prisma.users.create({
-        data: {
-            email: data.email,
-            name: data.name,
-            password: data.password,
-            username: data.email.split("@")[0],
-        },
-    })
+    try {
+        const user = prisma.users.create({
+            data: {
+                email: data.email,
+                name: data.name,
+                password: data.password,
+                username: data.email.split("@")[0],
+            },
+        })
 
-    response.json(user)
+        response.json(user)
+    } catch (error) {
+        console.log(error)
+        response.json(null)
+    }
 })
 
 export default router

@@ -19,14 +19,20 @@ const prisma = new client_1.PrismaClient();
 router.post("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const data = request.body;
     console.log(data);
-    const user = prisma.users.create({
-        data: {
-            email: data.email,
-            name: data.name,
-            password: data.password,
-            username: data.email.split("@")[0],
-        },
-    });
-    response.json(user);
+    try {
+        const user = prisma.users.create({
+            data: {
+                email: data.email,
+                name: data.name,
+                password: data.password,
+                username: data.email.split("@")[0],
+            },
+        });
+        response.json(user);
+    }
+    catch (error) {
+        console.log(error);
+        response.json(null);
+    }
 }));
 exports.default = router;
