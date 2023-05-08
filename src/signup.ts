@@ -9,7 +9,7 @@ router.post("/", async (request: Request, response: Response) => {
     console.log(data)
 
     try {
-        const user = prisma.users.create({
+        const user = await prisma.users.create({
             data: {
                 email: data.email,
                 name: data.name,

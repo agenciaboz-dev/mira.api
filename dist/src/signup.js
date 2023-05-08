@@ -21,7 +21,7 @@ router.post("/", (request, response) => __awaiter(void 0, void 0, void 0, functi
     data.username = data.email.split("@")[0];
     console.log(data);
     try {
-        const user = prisma.users.create({
+        const user = yield prisma.users.create({
             data: {
                 email: data.email,
                 name: data.name,
