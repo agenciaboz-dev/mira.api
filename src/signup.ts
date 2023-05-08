@@ -5,21 +5,18 @@ const prisma = new PrismaClient()
 
 router.post("/", async (request: Request, response: Response) => {
     const data = request.body
+    console.log(data)
 
-    try {
-        const user = prisma.users.create({
-            data: {
-                email: data.email,
-                name: data.name,
-                password: data.password,
-                username: data.email.split("@")[0],
-            },
-        })
+    const user = prisma.users.create({
+        data: {
+            email: data.email,
+            name: data.name,
+            password: data.password,
+            username: data.email.split("@")[0],
+        },
+    })
 
-        response.json(user)
-    } catch {
-        response.json(null)
-    }
+    response.json(user)
 })
 
 export default router
