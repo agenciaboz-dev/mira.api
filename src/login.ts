@@ -24,4 +24,19 @@ router.post('/', async (request:Request, response:Response) => {
 
 })
 
+router.post("/adm", async (request: Request, response: Response) => {
+    const data = request.body
+
+    data.user = data.user.toLowerCase()
+
+    const user = await prisma.users.findFirst({
+        where: {
+            OR: [{ username: data.user }, { email: data.user }],
+            AND: [{ password: data.password }, { adm: true }],
+        },
+    })
+
+    response.json(user)
+})
+
 export default router
