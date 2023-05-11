@@ -16,3 +16,15 @@ model users {
     name        String
     adm         Boolean     @default(false)
 }
+
+model products {
+    id              Int         @id @default(autoincrement())
+    name            String
+    description     String
+    stock           Int
+    story           String      @db.Text
+    price           Float
+    image           String      @db.Text
+    video           String      @db.Text
+    specifications  String      @db.Text
+}
