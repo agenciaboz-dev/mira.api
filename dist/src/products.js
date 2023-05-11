@@ -20,4 +20,49 @@ router.get("/", (request, response) => __awaiter(void 0, void 0, void 0, functio
     const products = yield prisma.products.findMany();
     response.json(products);
 }));
+router.post("/add", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = request.body;
+    data.stock = Number(data.stock.toString().replace(/\D/g, ""));
+    data.price = Number(data.price
+        .toString()
+        .replace(/[^,.\d]/g, "")
+        .replace(",", "."));
+    console.log(data);
+    const product = yield prisma.products.create({
+        data: {
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            stock: data.stock,
+            image: data.image,
+            video: data.video,
+            story: data.story,
+            specifications: JSON.stringify([{ name: "teste", value: "5kg" }]),
+        },
+    });
+    response.json(product);
+}));
+router.post("/update", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = request.body;
+    console.log(data);
+    data.stock = Number(data.stock.toString().replace(/\D/g, ""));
+    data.price = Number(data.price
+        .toString()
+        .replace(/[^,.\d]/g, "")
+        .replace(",", "."));
+    const product = yield prisma.products.update({
+        data: {
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            stock: data.stock,
+            image: data.image,
+            video: data.video,
+            story: data.story,
+            specifications: JSON.stringify([{ name: "teste", value: "5kg" }]),
+        },
+        where: { id: data.id },
+    });
+    response.json(product);
+}));
 exports.default = router;
