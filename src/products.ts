@@ -8,6 +8,13 @@ router.get("/", async (request: Request, response: Response) => {
     response.json(products)
 })
 
+router.post("/", async (request: Request, response: Response) => {
+    const data = request.body
+
+    const product = await prisma.products.findUnique({ where: { id: Number(data.id) } })
+    response.json(product)
+})
+
 router.post("/add", async (request: Request, response: Response) => {
     const data = request.body
 

@@ -20,6 +20,11 @@ router.get("/", (request, response) => __awaiter(void 0, void 0, void 0, functio
     const products = yield prisma.products.findMany();
     response.json(products);
 }));
+router.post("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = request.body;
+    const product = yield prisma.products.findUnique({ where: { id: Number(data.id) } });
+    response.json(product);
+}));
 router.post("/add", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const data = request.body;
     data.stock = Number(data.stock.toString().replace(/\D/g, ""));
