@@ -7,6 +7,8 @@ exports.router = void 0;
 const express_1 = __importDefault(require("express"));
 const login_1 = __importDefault(require("./src/login"));
 const signup_1 = __importDefault(require("./src/signup"));
+const products_1 = __importDefault(require("./src/products"));
 exports.router = express_1.default.Router();
 exports.router.use("/login", login_1.default);
 exports.router.use("/signup", signup_1.default);
+exports.router.use("/products", products_1.default);
