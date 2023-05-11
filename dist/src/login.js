@@ -32,4 +32,15 @@ router.post('/', (request, response) => __awaiter(void 0, void 0, void 0, functi
     console.log(user);
     response.json(user);
 }));
+router.post("/adm", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = request.body;
+    data.user = data.user.toLowerCase();
+    const user = yield prisma.users.findFirst({
+        where: {
+            OR: [{ username: data.user }, { email: data.user }],
+            AND: [{ password: data.password }, { adm: true }],
+        },
+    });
+    response.json(user);
+}));
 exports.default = router;
