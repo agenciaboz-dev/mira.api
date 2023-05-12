@@ -16,7 +16,7 @@ model users {
     name        String
     phone       String      @default("")
     adm         Boolean     @default(false)
-    address     addresses[]
+    addresses   addresses[]
 }
 
 model addresses {
@@ -29,7 +29,7 @@ model addresses {
     complement  String?
     district    String
     city        String
-    uf          String
+    uf          String      @db.Char(2)
     users       users       @relation(fields: [user], references: [id])
     user        Int
 }
