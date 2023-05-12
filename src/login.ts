@@ -9,15 +9,15 @@ router.post('/', async (request:Request, response:Response) => {
     console.log(data)
     data.user = data.user.toLowerCase()
 
-    const user = await prisma.users.findFirst({ where: {
-        OR: [
-            {username: data.user},
-            {email: data.user},
-        ],
-        AND: {
-            password: data.password
-        }
-    } })
+    const user = await prisma.users.findFirst({
+        where: {
+            OR: [{ username: data.user }, { email: data.user }],
+            AND: {
+                password: data.password,
+            },
+        },
+        include: { addresses: true },
+    })
 
     console.log(user)
     response.json(user)
