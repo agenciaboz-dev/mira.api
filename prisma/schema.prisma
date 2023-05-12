@@ -16,6 +16,22 @@ model users {
     name        String
     phone       String      @default("")
     adm         Boolean     @default(false)
+    address     addresses[]
+}
+
+model addresses {
+    id          Int         @id @default(autoincrement())
+    receiver    String
+    phone       String
+    cep         String
+    address     String
+    number      Int
+    complement  String?
+    district    String
+    city        String
+    uf          String
+    users       users       @relation(fields: [user], references: [id])
+    user        Int
 }
 
 model products {
