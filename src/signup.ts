@@ -15,6 +15,7 @@ router.post("/", async (request: Request, response: Response) => {
                 name: data.name,
                 password: data.password,
                 username: data.username,
+                phone: data.phone,
             },
         })
         console.log(user)
