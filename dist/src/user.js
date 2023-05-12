@@ -18,24 +18,29 @@ const router = express_1.default.Router();
 const prisma = new client_1.PrismaClient();
 router.post("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const data = request.body;
-    data.username = data.email.split("@")[0];
-    console.log(data);
-    try {
-        const user = yield prisma.users.create({
+    console.log({ change_password: data.change_password });
+    if (data.change_password) {
+        const user = yield prisma.users.update({
+            where: { id: data.id },
             data: {
-                email: data.email,
                 name: data.name,
-                password: data.password,
-                username: data.username,
+                email: data.email,
+                phone: data.phone,
+                password: data.new_password,
+            },
+        });
+        response.json(user);
+    }
+    else {
+        const user = yield prisma.users.update({
+            where: { id: data.id },
+            data: {
+                name: data.name,
+                email: data.email,
                 phone: data.phone,
             },
         });
-        console.log(user);
         response.json(user);
-    }
-    catch (error) {
-        console.log(error);
-        response.json(null);
     }
 }));
 exports.default = router;
