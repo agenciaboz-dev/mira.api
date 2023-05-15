@@ -73,4 +73,41 @@ router.post("/address", async (request: Request, response: Response) => {
     }
 })
 
+router.post("/card", async (request: Request, response: Response) => {
+    const data = request.body
+    console.log(data)
+
+    if (data.new_card) {
+        const card = await prisma.cards.create({
+            data: {
+                name: data.name,
+                number: data.number,
+                cvv: data.cvv,
+                expiration_month: data.expiration_month,
+                expiration_year: data.expiration_year,
+                type: data.type,
+                user: data.user_id,
+            },
+        })
+
+        response.json(card)
+    } else {
+        const card = await prisma.cards.update({
+            data: {
+                name: data.name,
+                number: data.number,
+                cvv: data.cvv,
+                expiration_month: data.expiration_month,
+                expiration_year: data.expiration_year,
+                type: data.type,
+                user: data.id,
+            },
+
+            where: { id: data.id },
+        })
+
+        response.json(card)
+    }
+})
+
 export default router

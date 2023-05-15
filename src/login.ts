@@ -16,7 +16,7 @@ router.post('/', async (request:Request, response:Response) => {
                 password: data.password,
             },
         },
-        include: { addresses: true },
+        include: { addresses: true, cards: true },
     })
 
     console.log(user)
