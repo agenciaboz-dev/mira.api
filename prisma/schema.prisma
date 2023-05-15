@@ -17,6 +17,19 @@ model users {
     phone       String      @default("")
     adm         Boolean     @default(false)
     addresses   addresses[]
+    cards       cards[]
+}
+
+model cards {
+    id                  Int         @id @default(autoincrement())
+    name                String
+    number              String
+    expiration_month    String
+    expiration_year     String
+    cvv                 String
+    type                String
+    users               users       @relation(fields: [user], references: [id])
+    user                Int
 }
 
 model addresses {
