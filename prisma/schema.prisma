@@ -58,3 +58,10 @@ model products {
     video           String      @db.Text
     specifications  String      @db.Text
 }
+
+model pagseguro {
+    id              Int         @id @default(autoincrement())
+    private         String      @db.Text
+    public          String      @db.Text
+    timestamp       Int
+}
