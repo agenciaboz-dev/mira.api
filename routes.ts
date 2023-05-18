@@ -7,7 +7,7 @@ import user from "./src/user"
 export const router = express.Router()
 
 router.get("/", async (request: Request, response: Response) => {
-    response.json(router)
+    response.json({ success: true })
 })
 
 router.use("/login", login)
