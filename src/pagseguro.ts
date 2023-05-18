@@ -44,7 +44,7 @@ router.get("/keys", async (request, response) => {
     }
 })
 
-router.post("/new_keys", async (request, response, next) => {
+router.get("/new_keys", async (request, response, next) => {
     const keys = await prisma.pagseguro.findFirst()
 
     if (keys) {
