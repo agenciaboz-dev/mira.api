@@ -81,7 +81,7 @@ router.get("/new_keys", async (request, response, next) => {
                         console.log("keys stored in database")
 
                         response.json({
-                            new_keys,
+                            keys: new_keys,
                             url: `https://app.agenciaboz.com.br:4102/api/pagseguro/keys`,
                             new: true,
                         })
