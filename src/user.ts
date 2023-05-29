@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express"
 import { PrismaClient } from "@prisma/client"
-import { clients } from "./websocket/clients"
+import { clients } from "./websocket/socket"
+
 const router = express.Router()
 const prisma = new PrismaClient()
 
