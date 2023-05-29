@@ -5,6 +5,7 @@ import products from "./src/products"
 import user from "./src/user"
 import pagseguro from "./src/pagseguro"
 import checkout from "./src/checkout"
+import orders from "./src/orders"
 
 export const router = express.Router()
 
@@ -18,3 +19,4 @@ router.use("/products", products)
 router.use("/user", user)
 router.use("/pagseguro", pagseguro)
 router.use("/checkout", checkout)
+router.use("/orders", orders)
