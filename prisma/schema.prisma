@@ -18,6 +18,7 @@ model users {
     adm         Boolean     @default(false)
     addresses   addresses[]
     cards       cards[]
+    orders      orders[]
 }
 
 model cards {
@@ -57,6 +58,17 @@ model products {
     image           String      @db.Text
     video           String      @db.Text
     specifications  String      @db.Text
+    orders          orders[]
+}
+
+model orders {
+    id              Int         @id @default(autoincrement())
+    products        products[]
+    user            users       @relation(fields: [user_id], references: [id])
+    user_id         Int
+    status          Int         @default(0)
+    date            DateTime    @db.Date
+    method          String?
 }
 
 model pagseguro {
