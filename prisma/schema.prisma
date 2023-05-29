@@ -67,7 +67,7 @@ model orders {
     user            users       @relation(fields: [user_id], references: [id])
     user_id         Int
     status          Int         @default(0)
-    date            DateTime    @db.Date
+    date            DateTime    @default(now())
     method          String?
 }
 
