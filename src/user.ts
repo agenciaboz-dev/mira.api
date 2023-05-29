@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express"
 import { PrismaClient } from "@prisma/client"
+import { clients } from "./websocket/clients"
 const router = express.Router()
 const prisma = new PrismaClient()
 
@@ -108,6 +109,10 @@ router.post("/card", async (request: Request, response: Response) => {
 
         response.json(card)
     }
+})
+
+router.get("/ws", async (request: Request, response: Response) => {
+    response.json(clients)
 })
 
 export default router
