@@ -51,12 +51,6 @@ router.post("/new", async (request: Request, response: Response) => {
     if (data.address.delivery) {
         // frete.list()
         // frete.list()
-        frete.quotation({
-            from: "80230040",
-            to: "80060020",
-            invoice_amount: 15.5,
-            volumes: [{ height: 1, length: 40, quantity: 1, weight: 1, width: 20 }],
-        })
     }
     //
 
