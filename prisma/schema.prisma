@@ -46,6 +46,7 @@ model addresses {
     uf          String      @db.Char(2)
     users       users       @relation(fields: [user], references: [id])
     user        Int
+    orders      orders[]
 }
 
 model products {
@@ -69,6 +70,8 @@ model orders {
     status          Int         @default(0)
     date            DateTime    @default(now())
     method          String?
+    address         addresses   @relation(fields: [address_id], references: [id])
+    address_id      Int         @default(1)
 }
 
 model pagseguro {
