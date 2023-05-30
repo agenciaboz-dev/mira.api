@@ -62,7 +62,7 @@ router.post("/new", async (request: Request, response: Response) => {
                 customer: {
                     name: user.name || "Totem Loja",
                     tax_id: user.cpf || "02576698506",
-                    email: user.email,
+                    email: user.email || "fernando@agenciazop.com.br",
                 },
                 items: products.map((product) => ({
                     name: product.name,
