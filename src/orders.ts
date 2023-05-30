@@ -76,8 +76,7 @@ router.post("/new", async (request: Request, response: Response) => {
                 const data = pag_response.data
                 console.log(data)
                 const log = { request: pag_response.request, response: pag_response.data }
-                writeFileSync("new_order.txt", JSON.stringify(log))
-                response.json({ pagseguro: data, order })
+                response.json({ pagseguro: data, order, log })
             }
         )
     }
