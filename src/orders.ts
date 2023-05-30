@@ -4,6 +4,7 @@ import { clients } from "./websocket/socket"
 import { frete, mira } from "./frete"
 import { AxiosResponse } from "axios"
 import { pagseguro } from "./pagseguro"
+import { writeFileSync } from "fs"
 
 const router = express.Router()
 const prisma = new PrismaClient()
@@ -74,6 +75,8 @@ router.post("/new", async (request: Request, response: Response) => {
             (pag_response: AxiosResponse) => {
                 const data = pag_response.data
                 console.log(data)
+                const log = { request: pag_response.request, response: pag_response.data }
+                writeFileSync("new_order.txt", JSON.stringify(log))
                 response.json({ pagseguro: data, order })
             }
         )
