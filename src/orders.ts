@@ -74,7 +74,7 @@ router.post("/new", async (request: Request, response: Response) => {
             },
             (pag_response: AxiosResponse) => {
                 const data = pag_response.data
-                console.log(data)
+                console.log(pag_response.request)
                 response.json({ pagseguro: data, order })
             }
         )
