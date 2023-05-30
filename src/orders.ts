@@ -73,23 +73,18 @@ router.post("/new", async (request: Request, response: Response) => {
             (pag_response: AxiosResponse) => {
                 const data = pag_response.data
                 console.log(data)
-                response.json(data)
+                response.json({ pagseguro: data, order })
             }
         )
     }
 
-    // const client = clients.filter((client) => client.user.id == data.user.id)[0]
-
-    // response.json(order)
-
     //
-    // API DE ENTREGA AQUI
     if (data.address.delivery) {
         // frete.list()
         // frete.list()
     }
-    //
 
+    // const client = clients.filter((client) => client.user.id == data.user.id)[0]
     // client.connection.send(JSON.stringify({ paid: true, order }))
 })
 
