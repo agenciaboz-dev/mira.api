@@ -84,14 +84,16 @@ router.post("/new", async (request: Request, response: Response) => {
         // frete.list()
     }
 
-    // const client = clients.filter((client) => client.user.id == data.user.id)[0]
-    // client.connection.send(JSON.stringify({ paid: true, order }))
 })
 
 router.post("/webhook", (request, response, next) => {
     const data = request.body
-
+    
     console.log(data)
+    if (data.charges?.length > 0) {
+        const client = clients.filter((client) => client.order.id == data.reference_id)[0]
+        client?.connection.send(JSON.stringify(data.charges[0]))
+    }
 
     response.json({ message: "teste" })
 })
