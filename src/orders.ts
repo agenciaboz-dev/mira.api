@@ -53,6 +53,7 @@ router.post("/new", async (request: Request, response: Response) => {
         include: { address: true },
     })
 
+    // PIX
     if (data.method == "pix") {
         pagseguro.order(
             {
@@ -78,12 +79,10 @@ router.post("/new", async (request: Request, response: Response) => {
         )
     }
 
-    //
     if (data.address.delivery) {
         // frete.list()
         // frete.list()
     }
-
 })
 
 router.post("/webhook", (request, response, next) => {
