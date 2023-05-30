@@ -45,7 +45,7 @@ router.post("/new", async (request: Request, response: Response) => {
 
     const order = await prisma.orders.create({
         data: {
-            user_id: data.user.id,
+            user_id: data.user.id || 1,
             method: data.method,
             status: 0,
             products: { connect: products.map((product) => ({ id: product.id })) },
@@ -60,8 +60,8 @@ router.post("/new", async (request: Request, response: Response) => {
             {
                 reference_id: order.id.toString(),
                 customer: {
-                    name: user.name,
-                    tax_id: user.cpf,
+                    name: user.name || "Totem Loja",
+                    tax_id: user.cpf || "02576698506",
                     email: user.email,
                 },
                 items: products.map((product) => ({
