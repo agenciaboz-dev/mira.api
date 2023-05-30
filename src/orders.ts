@@ -20,7 +20,9 @@ router.post("/new", async (request: Request, response: Response) => {
             method: data.method,
             status: 1,
             products: { connect: products.map((product) => ({ id: product.id })) },
+            address_id: data.address.id,
         },
+        include: { address: true },
     })
 
     response.json(order)
