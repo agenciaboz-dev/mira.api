@@ -3,7 +3,7 @@ import login from './src/login'
 import signup from "./src/signup"
 import products from "./src/products"
 import user from "./src/user"
-import pagseguro from "./src/pagseguro"
+import pagseguro from "./src/pagseguro_setup"
 import checkout from "./src/checkout"
 import orders from "./src/orders"
 import viacep from "./src/viacep"
