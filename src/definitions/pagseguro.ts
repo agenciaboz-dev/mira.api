@@ -38,7 +38,7 @@ interface QrCode {
 }
 
 export interface Order {
-    reference_id: string
+    reference_id?: string
     customer: Customer
     items?: Item[]
     shipping?: Shipping

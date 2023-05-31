@@ -1,6 +1,9 @@
 import express, { Express, Request, Response } from "express"
 import { PrismaClient } from "@prisma/client"
 import { exec } from "child_process"
+import { Order } from "./definitions/pagseguro"
+import { pagseguro } from "./pagseguro"
+import { AxiosResponse } from "axios"
 const router = express.Router()
 const prisma = new PrismaClient()
 
@@ -63,6 +66,27 @@ router.get("/new_keys", async (request, response, next) => {
             })
         })
     }
+})
+
+router.post("/new", async (request: Request, response: Response) => {
+    const data: Order = request.body
+    console.log(data)
+
+    const order = await prisma.orders.create({
+        data: {
+            user_id: 1,
+            method: "pix",
+            status: 0,
+            // products: { connect: data.items?.map((product) => ({ id: 1 })) }, /
+            address_id: 1,
+        },
+        include: { address: true },
+    })
+
+    pagseguro.order(data, (pag_response: AxiosResponse) => {
+        const data = pag_response.data
+        response.json({ pagseguro: data, order })
+    })
 })
 
 export default router
