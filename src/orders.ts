@@ -75,7 +75,6 @@ router.post("/new", async (request: Request, response: Response) => {
 
             (pag_response: AxiosResponse) => {
                 const data = pag_response.data
-                console.log(pag_response.request)
                 response.json({ pagseguro: data, order })
             }
         )
@@ -89,11 +88,12 @@ router.post("/new", async (request: Request, response: Response) => {
 
 router.post("/webhook", (request, response, next) => {
     const data = request.body
-    
+
     console.log(data)
     if (data.charges?.length > 0) {
         const client = clients.filter((client) => client.order.id == data.reference_id)[0]
         client?.connection.send(JSON.stringify(data.charges[0]))
+        console.log(client)
     }
 
     response.json({ message: "teste" })
