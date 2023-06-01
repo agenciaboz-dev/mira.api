@@ -13,8 +13,12 @@ const headers = { Authorization: token }
 export const pagseguro = {
     order: (order: Order, callback: Function) =>
         api.post("/orders", order, { headers }).then((response) => callback(response)),
-    pixPay: (order: any) =>
+    pixPay: (order: any, callback: Function) =>
         api.post("/pix/pay/" + order.id, { status: "PAID", tx_id: order.id }, { headers }).then((response) => {
-            console.log(response.data)
+            callback(response)
+        }),
+    get: (order: any, callback: Function) =>
+        api.get("/orders/" + order.id, { headers }).then((response) => {
+            callback(response)
         }),
 }

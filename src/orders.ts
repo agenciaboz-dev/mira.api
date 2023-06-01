@@ -72,6 +72,7 @@ router.post("/new", async (request: Request, response: Response) => {
                 notification_urls: ["https://app.agenciaboz.com.br:4102/api/orders/webhook"],
                 qr_codes: [{ amount: { value: total * 100 } }],
             },
+
             (pag_response: AxiosResponse) => {
                 const data = pag_response.data
                 console.log(pag_response.request)
