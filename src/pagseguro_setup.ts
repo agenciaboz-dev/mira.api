@@ -82,7 +82,7 @@ router.post("/new", async (request: Request, response: Response) => {
         include: { address: true },
     })
 
-    pagseguro.order(data, (pag_response: AxiosResponse) => {
+    pagseguro.order({ ...data, reference_id: order.id.toString() }, (pag_response: AxiosResponse) => {
         const data = pag_response.data
         response.json({ pagseguro: data, order })
     })
