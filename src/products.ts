@@ -87,7 +87,7 @@ router.post("/update", async (request: Request, response: Response) => {
             height: data.height,
             length: data.length,
             specifications: JSON.stringify([{ name: "teste", value: "5kg" }]),
-            categories: { connect: categories.map((category) => ({ id: category.id })) },
+            categories: { set: [], connect: categories.map((category) => ({ id: category.id })) },
         },
         where: { id: data.id },
         include: { categories: true },
