@@ -51,7 +51,7 @@ router.post("/new", async (request: Request, response: Response) => {
             products: { connect: products.map((product) => ({ id: product.id })) },
             address_id: data.address.id,
         },
-        include: { address: !!address },
+        include: { address: !!address?.id },
     })
 
     // PIX
