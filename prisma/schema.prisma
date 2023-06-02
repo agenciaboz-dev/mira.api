@@ -66,6 +66,7 @@ model products {
     height          Float       @default(5)
     length          Float       @default(5)
     orders          orders[]
+    categories      categories[]
 }
 
 model orders {
@@ -85,4 +86,10 @@ model pagseguro {
     private         String      @db.Text
     public          String      @db.Text
     timestamp       Int
+}
+
+model categories {
+    id                  Int         @id @default(autoincrement())
+    name                String
+    products            products[]
 }
