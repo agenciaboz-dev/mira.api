@@ -60,6 +60,10 @@ model products {
     image           String      @db.Text
     video           String      @db.Text
     specifications  String      @db.Text
+    weight          Float       @default(5)
+    width           Float       @default(5)
+    height          Float       @default(5)
+    length          Float       @default(5)
     orders          orders[]
 }
 
