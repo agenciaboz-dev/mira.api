@@ -1,17 +1,17 @@
 import express, { Express, Request, Response } from "express"
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, categories } from "@prisma/client"
 const router = express.Router()
 const prisma = new PrismaClient()
 
 router.get("/", async (request: Request, response: Response) => {
-    const products = await prisma.products.findMany()
+    const products = await prisma.products.findMany({ include: { categories: true } })
     response.json(products)
 })
 
 router.post("/", async (request: Request, response: Response) => {
     const data = request.body
 
-    const product = await prisma.products.findUnique({ where: { id: Number(data.id) } })
+    const product = await prisma.products.findUnique({ where: { id: Number(data.id) }, include: { categories: true } })
     response.json(product)
 })
 
@@ -30,7 +30,7 @@ router.post("/add", async (request: Request, response: Response) => {
     data.height = Number(data.height.toString().replace(",", "."))
     data.length = Number(data.length.toString().replace(",", "."))
 
-    console.log(data)
+    const categories: categories[] = data.categories
 
     const product = await prisma.products.create({
         data: {
@@ -47,7 +47,9 @@ router.post("/add", async (request: Request, response: Response) => {
             height: data.height,
             length: data.length,
             specifications: JSON.stringify([{ name: "teste", value: "5kg" }]),
+            categories: { connect: categories.map((category) => ({ id: category.id })) },
         },
+        include: { categories: true },
     })
     response.json(product)
 })
@@ -68,6 +70,8 @@ router.post("/update", async (request: Request, response: Response) => {
     data.height = Number(data.height.toString().replace(",", "."))
     data.length = Number(data.length.toString().replace(",", "."))
 
+    const categories: categories[] = data.categories
+
     const product = await prisma.products.update({
         data: {
             name: data.name,
@@ -83,8 +87,10 @@ router.post("/update", async (request: Request, response: Response) => {
             height: data.height,
             length: data.length,
             specifications: JSON.stringify([{ name: "teste", value: "5kg" }]),
+            categories: { connect: categories.map((category) => ({ id: category.id })) },
         },
         where: { id: data.id },
+        include: { categories: true },
     })
     response.json(product)
 })
@@ -92,7 +98,7 @@ router.post("/update", async (request: Request, response: Response) => {
 router.post("/delete", async (request: Request, response: Response) => {
     const data = request.body
 
-    const product = await prisma.products.delete({ where: { id: data.id } })
+    const product = await prisma.products.delete({ where: { id: data.id }, include: { categories: true } })
     response.json(product)
 })
 

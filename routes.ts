@@ -1,11 +1,12 @@
 import express, { Express, Request, Response } from 'express'
-import login from './src/login'
+import viacep from "./src/viacep"
+import login from "./src/login"
 import signup from "./src/signup"
 import products from "./src/products"
 import user from "./src/user"
 import pagseguro from "./src/pagseguro_setup"
 import orders from "./src/orders"
-import viacep from "./src/viacep"
+import categories from "./src/categories"
 
 export const router = express.Router()
 
@@ -27,3 +28,4 @@ router.use("/products", products)
 router.use("/user", user)
 router.use("/pagseguro", pagseguro)
 router.use("/orders", orders)
+router.use("/categories", categories)
