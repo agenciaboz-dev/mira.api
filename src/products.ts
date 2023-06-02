@@ -25,6 +25,10 @@ router.post("/add", async (request: Request, response: Response) => {
             .replace(/[^,.\d]/g, "")
             .replace(",", ".")
     )
+    data.weight = Number(data.weight.toString().replace(",", "."))
+    data.width = Number(data.width.toString().replace(",", "."))
+    data.height = Number(data.height.toString().replace(",", "."))
+    data.length = Number(data.length.toString().replace(",", "."))
 
     console.log(data)
 
@@ -37,6 +41,7 @@ router.post("/add", async (request: Request, response: Response) => {
             image: data.image,
             video: data.video,
             story: data.story,
+            usage: data.usage,
             weight: data.weight,
             width: data.width,
             height: data.height,
@@ -58,6 +63,10 @@ router.post("/update", async (request: Request, response: Response) => {
             .replace(/[^,.\d]/g, "")
             .replace(",", ".")
     )
+    data.weight = Number(data.weight.toString().replace(",", "."))
+    data.width = Number(data.width.toString().replace(",", "."))
+    data.height = Number(data.height.toString().replace(",", "."))
+    data.length = Number(data.length.toString().replace(",", "."))
 
     const product = await prisma.products.update({
         data: {
@@ -67,6 +76,7 @@ router.post("/update", async (request: Request, response: Response) => {
             stock: data.stock,
             image: data.image,
             video: data.video,
+            usage: data.usage,
             story: data.story,
             weight: data.weight,
             width: data.width,
