@@ -44,7 +44,7 @@ router.post("/new", async (request: Request, response: Response) => {
 
     const order = await prisma.orders.create({
         data: {
-            user_id: data.user.id || 1,
+            user_id: data.user?.id || 1,
             method: data.method,
             status: 0,
             products: { connect: products.map((product) => ({ id: product.id })) },
