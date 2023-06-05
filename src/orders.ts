@@ -48,7 +48,7 @@ router.post("/new", async (request: Request, response: Response) => {
             method: data.method,
             status: 0,
             products: { connect: products.map((product) => ({ id: product.id })) },
-            address_id: data.address.id,
+            // address_id: data.address.id,
         },
         include: { address: !!address?.id },
     })
