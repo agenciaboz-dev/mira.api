@@ -22,7 +22,7 @@ router.post("/add", async (request: Request, response: Response) => {
     data.price = Number(
         data.price
             .toString()
-            .replace(/[^.\d]/g, "")
+            .replace(/[^,\d]/g, "")
             .replace(",", ".")
     )
     data.weight = Number(data.weight.toString().replace(",", "."))
@@ -62,7 +62,7 @@ router.post("/update", async (request: Request, response: Response) => {
     data.price = Number(
         data.price
             .toString()
-            .replace(/[^.\d]/g, "")
+            .replace(/[^,\d]/g, "")
             .replace(",", ".")
     )
     data.weight = Number(data.weight.toString().replace(",", "."))
