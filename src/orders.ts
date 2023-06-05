@@ -56,9 +56,9 @@ router.post("/new", async (request: Request, response: Response) => {
     const pag_order = {
         reference_id: order.id.toString(),
         customer: {
-            name: user.name || "Totem Loja",
-            tax_id: user.cpf || "02576698506",
-            email: user.email || "fernando@agenciazop.com.br",
+            name: user?.name || "Totem Loja",
+            tax_id: user?.cpf || "02576698506",
+            email: user?.email || "fernando@agenciazop.com.br",
         },
         items: products.map((product) => ({
             name: product.name,
