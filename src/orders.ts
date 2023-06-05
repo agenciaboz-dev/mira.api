@@ -54,23 +54,55 @@ router.post("/new", async (request: Request, response: Response) => {
         include: { address: !!address?.id },
     })
 
+    const pag_order = {
+        reference_id: order.id.toString(),
+        customer: {
+            name: user.name || "Totem Loja",
+            tax_id: user.cpf || "02576698506",
+            email: user.email || "fernando@agenciazop.com.br",
+        },
+        items: products.map((product) => ({
+            name: product.name,
+            quantity: product.quantity,
+            unit_amount: product.price * 100,
+        })),
+        notification_urls: ["https://app.agenciaboz.com.br:4102/api/orders/webhook"],
+    }
+
     // PIX
     if (data.method == "pix") {
         pagseguro.order(
             {
-                reference_id: order.id.toString(),
-                customer: {
-                    name: user.name || "Totem Loja",
-                    tax_id: user.cpf || "02576698506",
-                    email: user.email || "fernando@agenciazop.com.br",
-                },
-                items: products.map((product) => ({
-                    name: product.name,
-                    quantity: product.quantity,
-                    unit_amount: product.price * 100,
-                })),
-                notification_urls: ["https://app.agenciaboz.com.br:4102/api/orders/webhook"],
+                ...pag_order,
                 qr_codes: [{ amount: { value: total * 100 } }],
+            },
+
+            (pag_response: AxiosResponse) => {
+                const data = pag_response.data
+                response.json({ pagseguro: data, order })
+            }
+        )
+    } else if (data.method == "card") {
+        pagseguro.order(
+            {
+                ...pag_order,
+                charges: [
+                    {
+                        reference_id: order.id.toString(),
+                        amount: { currency: "BRL", value: total },
+                        payment_method: {
+                            capture: true,
+                            card: {
+                                encrypted: data.card.encrypted,
+                                holder: data.card.holder,
+                                security_code: data.card.cvv,
+                                store: false,
+                            },
+                            installments: 1,
+                            type: "CREDIT_CARD",
+                        },
+                    },
+                ],
             },
 
             (pag_response: AxiosResponse) => {
@@ -80,10 +112,6 @@ router.post("/new", async (request: Request, response: Response) => {
         )
     }
 
-    if (data.address.delivery) {
-        // frete.list()
-        // frete.list()
-    }
 })
 
 router.post("/webhook", (request, response, next) => {
