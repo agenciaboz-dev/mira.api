@@ -88,7 +88,7 @@ router.post("/new", async (request: Request, response: Response) => {
                 charges: [
                     {
                         reference_id: order.id.toString(),
-                        amount: { currency: "BRL", value: total },
+                        amount: { currency: "BRL", value: total * 100 },
                         payment_method: {
                             capture: true,
                             card: {
