@@ -119,6 +119,7 @@ router.post("/new", async (request: Request, response: Response) => {
 router.post("/webhook", (request, response, next) => {
     const data = request.body
 
+    console.log("WEBHOOK CALL")
     console.log(data)
     if (data.charges?.length > 0) {
         const client = clients.filter((client) => client.order.id == data.reference_id)[0]
