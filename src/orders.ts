@@ -94,7 +94,9 @@ router.post("/new", async (request: Request, response: Response) => {
                             capture: true,
                             card: {
                                 encrypted: data.card.encrypted,
-                                holder: data.card.holder,
+                                holder: {
+                                    name: data.card.holder,
+                                },
                                 security_code: data.card.cvv,
                                 store: false,
                             },
