@@ -38,7 +38,6 @@ router.post("/new", async (request: Request, response: Response) => {
     }
 
     const user: users = data.user
-    const delivery: boolean = data.address.delivery
     const address: addresses = data.address
     const products: product[] = data.products
     const total: number = data.total
