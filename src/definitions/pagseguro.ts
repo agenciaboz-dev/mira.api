@@ -45,7 +45,7 @@ interface Charge {
         currency: "BRL"
     }
     payment_method: {
-        type: "CREDIT_CARD"
+        type: "CREDIT_CARD" | "DEBIT_CARD"
         installments: 1
         capture: true
         card: {
