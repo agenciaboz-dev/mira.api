@@ -17,24 +17,29 @@ router.post("/", async (request: Request, response: Response) => {
 
     const products: product[] = data.products
 
-    frete.quotation(
-        {
-            from: mira.cep,
-            invoice_amount: data.total,
-            to: data.cep,
-            volumes: products.map((product) => ({
-                quantity: product.quantity,
-                height: product.height,
-                length: product.length,
-                weight: product.weight,
-                width: product.width,
-            })),
-        },
-        (delivery_response: AxiosResponse) => {
-            // console.log(delivery_response.data)
-            response.json(delivery_response.data)
-        }
-    )
+    try {
+        frete.quotation(
+            {
+                from: mira.cep,
+                invoice_amount: data.total,
+                to: data.cep,
+                volumes: products.map((product) => ({
+                    quantity: product.quantity,
+                    height: product.height,
+                    length: product.length,
+                    weight: product.weight,
+                    width: product.width,
+                })),
+            },
+            (delivery_response: AxiosResponse) => {
+                // console.log(delivery_response.data)
+                response.json(delivery_response.data)
+            }
+        )
+    } catch (e) {
+        console.log(e)
+    }
+
 })
 
 export default router
