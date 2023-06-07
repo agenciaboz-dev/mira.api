@@ -2,7 +2,7 @@ import axios from "axios"
 import { Quotation } from "./definitions/frete"
 
 const api = axios.create({
-    baseURL: "https://api.centraldofrete.com/v1",
+    baseURL: "https://sandbox.centraldofrete.com/v1",
     timeout: 1000 * 10,
 })
 
