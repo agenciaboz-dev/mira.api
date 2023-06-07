@@ -21,7 +21,7 @@ router.post("/", async (request: Request, response: Response) => {
         {
             from: mira.cep,
             invoice_amount: data.total,
-            to: data.cep,
+            to: data.cep.replace(/\D/g, ""),
             volumes: products.map((product) => ({
                 quantity: product.quantity,
                 height: product.height,
