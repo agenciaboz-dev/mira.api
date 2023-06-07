@@ -65,6 +65,7 @@ model products {
     width           Float       @default(5)
     height          Float       @default(5)
     length          Float       @default(5)
+    preparation     Int         @default(1)
     orders          orders[]
     categories      categories[]
 }
