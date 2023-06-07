@@ -119,11 +119,11 @@ router.post("/webhook", (request, response, next) => {
     const data = request.body
 
     console.log("WEBHOOK CALL")
-    console.log(data)
+    // console.log(data)
     if (data.charges?.length > 0) {
         const client = clients.filter((client) => client.order.id == data.reference_id)[0]
         client?.connection.send(JSON.stringify(data.charges[0]))
-        console.log(client)
+        // console.log(client)
     }
 
     response.json({ message: "teste" })
