@@ -36,8 +36,8 @@ router.post("/", async (request: Request, response: Response) => {
                 response.json(delivery_response.data)
             }
         )
-    } catch (e) {
-        console.log(e)
+    } catch (e:any) {
+        console.log(e.response.data.detail)
     }
 
 })
