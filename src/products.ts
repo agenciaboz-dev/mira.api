@@ -25,10 +25,31 @@ router.post("/add", async (request: Request, response: Response) => {
             .replace(/[^,\d]/g, "")
             .replace(",", ".")
     )
-    data.weight = Number(data.weight.toString().replace(",", "."))
-    data.width = Number(data.width.toString().replace(",", "."))
-    data.height = Number(data.height.toString().replace(",", "."))
-    data.length = Number(data.length.toString().replace(",", "."))
+    data.weight = Number(
+        data.weight
+            .toString()
+            .replace(/[^,\d]/g, "")
+            .replace(",", ".")
+    )
+    data.width = Number(
+        data.width
+            .toString()
+            .replace(/[^,\d]/g, "")
+            .replace(",", ".")
+    )
+    data.height = Number(
+        data.height
+            .toString()
+            .replace(/[^,\d]/g, "")
+            .replace(",", ".")
+    )
+    data.length = Number(
+        data.length
+            .toString()
+            .replace(/[^,\d]/g, "")
+            .replace(",", ".")
+    )
+    data.preparation = Number(data.preparation.toString().replace(/\D/g, "").replace(",", "."))
 
     const categories: categories[] = data.categories
 
@@ -45,7 +66,7 @@ router.post("/add", async (request: Request, response: Response) => {
             weight: data.weight,
             width: data.width,
             height: data.height,
-            length: data.length,
+            preparation: data.preparation,
             specifications: JSON.stringify([{ name: "teste", value: "5kg" }]),
             categories: { connect: categories.map((category) => ({ id: category.id })) },
         },
@@ -65,10 +86,31 @@ router.post("/update", async (request: Request, response: Response) => {
             .replace(/[^,\d]/g, "")
             .replace(",", ".")
     )
-    data.weight = Number(data.weight.toString().replace(",", "."))
-    data.width = Number(data.width.toString().replace(",", "."))
-    data.height = Number(data.height.toString().replace(",", "."))
-    data.length = Number(data.length.toString().replace(",", "."))
+    data.weight = Number(
+        data.weight
+            .toString()
+            .replace(/[^,\d]/g, "")
+            .replace(",", ".")
+    )
+    data.width = Number(
+        data.width
+            .toString()
+            .replace(/[^,\d]/g, "")
+            .replace(",", ".")
+    )
+    data.height = Number(
+        data.height
+            .toString()
+            .replace(/[^,\d]/g, "")
+            .replace(",", ".")
+    )
+    data.length = Number(
+        data.length
+            .toString()
+            .replace(/[^,\d]/g, "")
+            .replace(",", ".")
+    )
+    data.preparation = Number(data.preparation.toString().replace(/\D/g, "").replace(",", "."))
 
     const categories: categories[] = data.categories
 
@@ -85,7 +127,7 @@ router.post("/update", async (request: Request, response: Response) => {
             weight: data.weight,
             width: data.width,
             height: data.height,
-            length: data.length,
+            preparation: data.preparation,
             specifications: JSON.stringify([{ name: "teste", value: "5kg" }]),
             categories: { set: [], connect: categories.map((category) => ({ id: category.id })) },
         },
