@@ -54,10 +54,12 @@ model products {
     id              Int         @id @default(autoincrement())
     name            String
     description     String
+    brand           String      @default("")
     stock           Int
     story           String      @db.Text
     usage           String?     @db.Text
     price           Float
+    cost            Float       @default(0)
     image           String      @db.Text
     video           String      @db.Text
     specifications  String      @db.Text
