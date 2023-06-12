@@ -8,6 +8,7 @@ import pagseguro from "./src/pagseguro_setup"
 import orders from "./src/orders"
 import categories from "./src/categories"
 import delivery from "./src/delivery"
+import suppliers from "./src/suppliers"
 
 export const router = express.Router()
 
@@ -31,3 +32,4 @@ router.use("/pagseguro", pagseguro)
 router.use("/orders", orders)
 router.use("/categories", categories)
 router.use("/delivery", delivery)
+router.use("/suppliers", suppliers)
