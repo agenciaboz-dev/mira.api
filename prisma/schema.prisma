@@ -72,6 +72,8 @@ model products {
     prep_unit       Int         @default(2)
     orders          orders[]
     categories      categories[]
+    supplier        suppliers   @relation(fields: [supplier_id], references: [id])
+    supplier_id     Int         @default(1)
 }
 
 model orders {
@@ -97,5 +99,13 @@ model pagseguro {
 model categories {
     id                  Int         @id @default(autoincrement())
     name                String
+    products            products[]
+}
+
+model suppliers {
+    id                  Int         @id @default(autoincrement())
+    name                String
+    document            String
+    contact             String
     products            products[]
 }
