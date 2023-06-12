@@ -25,6 +25,12 @@ router.post("/add", async (request: Request, response: Response) => {
             .replace(/[^,\d]/g, "")
             .replace(",", ".")
     )
+    data.cost = Number(
+        data.cost
+            .toString()
+            .replace(/[^,\d]/g, "")
+            .replace(",", ".")
+    )
     data.weight = Number(
         data.weight
             .toString()
@@ -57,7 +63,9 @@ router.post("/add", async (request: Request, response: Response) => {
         data: {
             name: data.name,
             description: data.description,
+            brand: data.brand,
             price: data.price,
+            cost: data.cost,
             stock: data.stock,
             image: data.image,
             video: data.video,
@@ -82,6 +90,12 @@ router.post("/update", async (request: Request, response: Response) => {
     data.stock = Number(data.stock.toString().replace(/\D/g, ""))
     data.price = Number(
         data.price
+            .toString()
+            .replace(/[^,\d]/g, "")
+            .replace(",", ".")
+    )
+    data.cost = Number(
+        data.cost
             .toString()
             .replace(/[^,\d]/g, "")
             .replace(",", ".")
@@ -118,7 +132,9 @@ router.post("/update", async (request: Request, response: Response) => {
         data: {
             name: data.name,
             description: data.description,
+            brand: data.brand,
             price: data.price,
+            cost: data.cost,
             stock: data.stock,
             image: data.image,
             video: data.video,
