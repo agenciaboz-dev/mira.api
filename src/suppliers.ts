@@ -12,7 +12,7 @@ router.post("/add", async (request: Request, response: Response) => {
     const data = request.body
 
     const supplier = await prisma.suppliers.create({
-        data: { name: data.name, contact: data.contact, document: data.document },
+        data: { name: data.name, contact: data.contact, document: data.document, code: data.code },
         include: { products: true },
     })
     response.json(supplier)
@@ -23,7 +23,7 @@ router.post("/update", async (request: Request, response: Response) => {
 
     const supplier = await prisma.suppliers.update({
         where: { id: data.id },
-        data: { name: data.name, contact: data.contact, document: data.document },
+        data: { name: data.name, contact: data.contact, document: data.document, code: data.code },
         include: { products: true },
     })
 
