@@ -56,6 +56,7 @@ model products {
     description     String
     brand           String      @default("")
     stock           Int
+    stock_type      Int         @default(0)
     story           String      @db.Text
     usage           String?     @db.Text
     price           Float
