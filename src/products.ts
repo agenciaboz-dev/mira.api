@@ -4,14 +4,17 @@ const router = express.Router()
 const prisma = new PrismaClient()
 
 router.get("/", async (request: Request, response: Response) => {
-    const products = await prisma.products.findMany({ include: { categories: true } })
+    const products = await prisma.products.findMany({ include: { categories: true, supplier: true } })
     response.json(products)
 })
 
 router.post("/", async (request: Request, response: Response) => {
     const data = request.body
 
-    const product = await prisma.products.findUnique({ where: { id: Number(data.id) }, include: { categories: true } })
+    const product = await prisma.products.findUnique({
+        where: { id: Number(data.id) },
+        include: { categories: true, supplier: true },
+    })
     response.json(product)
 })
 
@@ -80,7 +83,7 @@ router.post("/add", async (request: Request, response: Response) => {
             specifications: JSON.stringify([{ name: "teste", value: "5kg" }]),
             categories: { connect: categories.map((category) => ({ id: category.id })) },
         },
-        include: { categories: true },
+        include: { categories: true, supplier: true },
     })
     response.json(product)
 })
@@ -152,7 +155,7 @@ router.post("/update", async (request: Request, response: Response) => {
             categories: { set: [], connect: categories.map((category) => ({ id: category.id })) },
         },
         where: { id: data.id },
-        include: { categories: true },
+        include: { categories: true, supplier: true },
     })
     response.json(product)
 })
@@ -160,7 +163,7 @@ router.post("/update", async (request: Request, response: Response) => {
 router.post("/delete", async (request: Request, response: Response) => {
     const data = request.body
 
-    const product = await prisma.products.delete({ where: { id: data.id }, include: { categories: true } })
+    const product = await prisma.products.delete({ where: { id: data.id }, include: { categories: true, supplier: true } })
     response.json(product)
 })
 
