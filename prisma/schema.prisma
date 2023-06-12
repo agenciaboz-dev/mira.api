@@ -72,8 +72,8 @@ model products {
     prep_unit       Int         @default(2)
     orders          orders[]
     categories      categories[]
-    supplier        suppliers   @relation(fields: [supplier_id], references: [id])
-    supplier_id     Int         @default(1)
+    supplier        suppliers?  @relation(fields: [supplier_id], references: [id])
+    supplier_id     Int?        @default(1)
 }
 
 model orders {
