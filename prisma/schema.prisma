@@ -68,6 +68,7 @@ model products {
     height          Float       @default(5)
     length          Float       @default(5)
     preparation     Int         @default(1)
+    prep_unit       Int         @default(2)
     orders          orders[]
     categories      categories[]
 }
