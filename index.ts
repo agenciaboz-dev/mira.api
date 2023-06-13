@@ -1,10 +1,11 @@
 import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import { router } from './routes'
-import bodyParser from 'body-parser'
-import cookieParser from 'cookie-parser'
-import https from 'https'
+import fileUpload from "express-fileupload"
+import { router } from "./routes"
+import bodyParser from "body-parser"
+import cookieParser from "cookie-parser"
+import https from "https"
 import http from "http"
 import fs from "fs"
 import { wsServer } from "./src/websocket/socket"
@@ -18,7 +19,9 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
+app.use(fileUpload())
 app.use("/api", router)
+app.use("/images", express.static("images"))
 
 try {
     const server = https.createServer(

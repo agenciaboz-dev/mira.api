@@ -1,5 +1,8 @@
 import express, { Express, Request, Response } from "express"
 import { PrismaClient, categories } from "@prisma/client"
+import fileUpload from "express-fileupload"
+import { existsSync, mkdirSync } from "fs"
+import { join } from "path"
 const router = express.Router()
 const prisma = new PrismaClient()
 
@@ -90,8 +93,15 @@ router.post("/add", async (request: Request, response: Response) => {
 })
 
 router.post("/update", async (request: Request, response: Response) => {
-    const data = request.body
-    console.log(data)
+    const data = JSON.parse(request.body.data)
+    const imageFile = request.files?.file! as fileUpload.UploadedFile
+
+    const filepath = `images/products/${data.id}/${imageFile.name}`
+    if (!existsSync(filepath)) {
+        mkdirSync(filepath, { recursive: true })
+    }
+
+    imageFile.mv(filepath)
 
     data.stock = Number(data.stock.toString().replace(/\D/g, ""))
     data.price = Number(
@@ -143,7 +153,7 @@ router.post("/update", async (request: Request, response: Response) => {
             price: data.price,
             cost: data.cost,
             stock: data.stock,
-            image: data.image,
+            image: `https://app.agenciaboz.com.br:4102/${filepath}`,
             video: data.video,
             usage: data.usage,
             story: data.story,
@@ -159,6 +169,7 @@ router.post("/update", async (request: Request, response: Response) => {
         where: { id: data.id },
         include: { categories: true, supplier: true },
     })
+
     response.json(product)
 })
 
