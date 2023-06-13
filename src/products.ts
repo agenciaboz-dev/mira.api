@@ -97,6 +97,7 @@ router.post("/add", async (request: Request, response: Response) => {
     const filepath = join(uploadDir, imageFile.name)
 
     imageFile.mv(filepath)
+    console.log(filepath)
 
     const updatedProduct = await prisma.products.update({
         data: { image: `https://app.agenciaboz.com.br:4102/${filepath}` },
