@@ -119,8 +119,6 @@ router.post("/update", async (request: Request, response: Response) => {
 
     imageFile.mv(filepath)
 
-    imageFile.mv(filepath)
-
     data.stock = Number(data.stock.toString().replace(/\D/g, ""))
     data.price = Number(
         data.price
