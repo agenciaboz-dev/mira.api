@@ -61,7 +61,7 @@ model products {
     usage           String?     @db.Text
     price           Float
     cost            Float       @default(0)
-    image           String      @db.Text
+    image           String?     @db.Text
     video           String      @db.Text
     specifications  String      @db.Text
     weight          Float       @default(5)
