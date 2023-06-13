@@ -20,8 +20,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(fileUpload())
-app.use("/api", router)
 app.use("/images", express.static("images"))
+app.use("/api", router)
 
 try {
     const server = https.createServer(
