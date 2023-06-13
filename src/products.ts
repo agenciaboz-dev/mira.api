@@ -90,10 +90,11 @@ router.post("/add", async (request: Request, response: Response) => {
         },
     })
 
-    const filepath = join(`images/products/${product.id}`, imageFile.name)
-    if (!existsSync(filepath)) {
-        mkdirSync(filepath, { recursive: true })
+    const uploadDir = `images/products/${product.id}`
+    if (!existsSync(uploadDir)) {
+        mkdirSync(uploadDir, { recursive: true })
     }
+    const filepath = join(uploadDir, imageFile.name)
 
     imageFile.mv(filepath)
 
