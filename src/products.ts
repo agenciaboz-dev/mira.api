@@ -97,7 +97,6 @@ router.post("/add", async (request: Request, response: Response) => {
     const filepath = join(uploadDir, imageFile.name)
 
     imageFile.mv(filepath)
-    console.log(filepath)
 
     const updatedProduct = await prisma.products.update({
         data: { image: `https://app.agenciaboz.com.br:4102/${filepath}` },
@@ -112,10 +111,13 @@ router.post("/update", async (request: Request, response: Response) => {
     const data = JSON.parse(request.body.data)
     const imageFile = request.files?.file! as fileUpload.UploadedFile
 
-    const filepath = `images/products/${data.id}/${imageFile.name}`
-    if (!existsSync(filepath)) {
-        mkdirSync(filepath, { recursive: true })
+    const uploadDir = `images/products/${data.id}`
+    if (!existsSync(uploadDir)) {
+        mkdirSync(uploadDir, { recursive: true })
     }
+    const filepath = join(uploadDir, imageFile.name)
+
+    imageFile.mv(filepath)
 
     imageFile.mv(filepath)
 
