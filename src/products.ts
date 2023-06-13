@@ -22,7 +22,8 @@ router.post("/", async (request: Request, response: Response) => {
 })
 
 router.post("/add", async (request: Request, response: Response) => {
-    const data = request.body
+    const data = JSON.parse(request.body.data)
+    const imageFile = request.files?.file! as fileUpload.UploadedFile
 
     data.stock = Number(data.stock.toString().replace(/\D/g, ""))
     data.price = Number(
@@ -87,9 +88,22 @@ router.post("/add", async (request: Request, response: Response) => {
             specifications: JSON.stringify([{ name: "teste", value: "5kg" }]),
             categories: { connect: categories.map((category) => ({ id: category.id })) },
         },
+    })
+
+    const filepath = `images/products/${product.id}/${imageFile.name}`
+    if (!existsSync(filepath)) {
+        mkdirSync(filepath, { recursive: true })
+    }
+
+    imageFile.mv(filepath)
+
+    const updatedProduct = await prisma.products.update({
+        data: { image: `https://app.agenciaboz.com.br:4102/${filepath}` },
+        where: { id: product.id },
         include: { categories: true, supplier: true },
     })
-    response.json(product)
+
+    response.json(updatedProduct)
 })
 
 router.post("/update", async (request: Request, response: Response) => {
