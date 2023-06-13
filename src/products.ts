@@ -117,7 +117,9 @@ router.post("/update", async (request: Request, response: Response) => {
     }
     const filepath = join(uploadDir, imageFile.name)
 
-    imageFile.mv(filepath)
+    imageFile.mv(filepath, (err) => {
+        console.log(err)
+    })
 
     data.stock = Number(data.stock.toString().replace(/\D/g, ""))
     data.price = Number(
