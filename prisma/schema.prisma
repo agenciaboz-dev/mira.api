@@ -85,8 +85,8 @@ model orders {
     status          Int         @default(0)
     date            DateTime    @default(now())
     method          String?
-    address         addresses   @relation(fields: [address_id], references: [id])
-    address_id      Int         @default(1)
+    address         addresses?  @relation(fields: [address_id], references: [id])
+    address_id      Int?        @default(1)
     name            String      @default("Teste da Silva")
     cpf             String      @default("00000000000")
 }
