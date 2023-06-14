@@ -61,7 +61,9 @@ router.post("/new", async (request: Request, response: Response) => {
             method: data.method,
             status: 0,
             products: { connect: products.map((product) => ({ id: product.id })) },
-            // address_id: data.address.id,
+            address_id: data.address?.id || 0,
+            name: data.name,
+            cpf: data.cpf,
         },
         include: { address: !!address?.id },
     })
@@ -69,8 +71,8 @@ router.post("/new", async (request: Request, response: Response) => {
     const pag_order = {
         reference_id: order.id.toString(),
         customer: {
-            name: user?.name || "Totem Loja",
-            tax_id: user?.cpf || "02576698506",
+            name: order.name,
+            tax_id: order.cpf,
             email: user?.email || "fernando@agenciazop.com.br",
         },
         items: products.map((product) => ({
