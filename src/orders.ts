@@ -9,8 +9,10 @@ import { writeFileSync } from "fs"
 const router = express.Router()
 const prisma = new PrismaClient()
 
-router.post("/", async (request: Request, response: Response) => {
-    const data = request.body
+router.get("/", async (request: Request, response: Response) => {
+    const orders = await prisma.orders.findMany({ include: { address: true, products: true, user: true } })
+
+    response.json(orders)
 })
 
 router.post("/quotation", async (request: Request, response: Response) => {
