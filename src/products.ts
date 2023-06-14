@@ -111,15 +111,26 @@ router.post("/update", async (request: Request, response: Response) => {
     const data = JSON.parse(request.body.data)
     const imageFile = request.files?.file! as fileUpload.UploadedFile
 
-    const uploadDir = `images/products/${data.id}`
-    if (!existsSync(uploadDir)) {
-        mkdirSync(uploadDir, { recursive: true })
-    }
-    const filepath = join(uploadDir, imageFile.name)
+    if (imageFile) {
+        const uploadDir = `images/products/${data.id}`
+        if (!existsSync(uploadDir)) {
+            mkdirSync(uploadDir, { recursive: true })
+        }
 
-    imageFile.mv(filepath, (err) => {
-        console.log(err)
-    })
+        const filepath = join(uploadDir, imageFile.name)
+
+        imageFile.mv(filepath, (err) => {
+            console.log(err)
+        })
+
+        const imageProduct = await prisma.products.update({
+            data: {
+                image: `https://app.agenciaboz.com.br:4102/${filepath}`,
+            },
+            where: { id: data.id },
+            include: { categories: true, supplier: true },
+        })
+    }
 
     data.stock = Number(data.stock.toString().replace(/\D/g, ""))
     data.price = Number(
@@ -171,7 +182,6 @@ router.post("/update", async (request: Request, response: Response) => {
             price: data.price,
             cost: data.cost,
             stock: data.stock,
-            image: `https://app.agenciaboz.com.br:4102/${filepath}`,
             video: data.video,
             usage: data.usage,
             story: data.story,
