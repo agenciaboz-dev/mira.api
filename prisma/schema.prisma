@@ -102,6 +102,7 @@ model pagseguro {
 model categories {
     id                  Int         @id @default(autoincrement())
     name                String
+    image               String?     @db.Text
     products            products[]
 }
 
