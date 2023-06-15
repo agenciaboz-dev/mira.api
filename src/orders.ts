@@ -64,6 +64,7 @@ router.post("/new", async (request: Request, response: Response) => {
             address_id: data.address?.id || 0,
             name: data.name,
             cpf: data.cpf,
+            value: total,
         },
         include: { address: !!address?.id },
     })
@@ -127,17 +128,21 @@ router.post("/new", async (request: Request, response: Response) => {
             }
         )
     }
-
 })
 
-router.post("/webhook", (request, response, next) => {
+router.post("/webhook", async (request, response, next) => {
     const data = request.body
 
     console.log("WEBHOOK CALL")
     // console.log(data)
     if (data.charges?.length > 0) {
         const client = clients.filter((client) => client.order.id == data.reference_id)[0]
-        client?.connection.send(JSON.stringify(data.charges[0]))
+        const charge = data.charges[0]
+        client?.connection.send(JSON.stringify(charge))
+
+        if (charge.status == "PAID") {
+            // await prisma.orders.update({ data: { status: 1 }, where: { id: charge } })
+        }
         // console.log(client)
     }
 
