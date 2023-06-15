@@ -89,6 +89,7 @@ model orders {
     address_id      Int?        @default(1)
     name            String      @default("Teste da Silva")
     cpf             String      @default("00000000000")
+    value           Float       @default(0)
 }
 
 model pagseguro {
