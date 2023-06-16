@@ -208,4 +208,15 @@ router.post("/delete", async (request: Request, response: Response) => {
     response.json(product)
 })
 
+router.post("/apply_profit_margin", async (request: Request, response: Response) => {
+    const data = request.body
+
+    const product = await prisma.products.update({
+        where: { id: data.product.id },
+        data: { price: data.price },
+    })
+
+    response.json(product)
+})
+
 export default router
