@@ -19,7 +19,6 @@ router.post('/', async (request:Request, response:Response) => {
         include: { addresses: true, cards: true, orders: true },
     })
 
-    console.log(user)
     response.json(user)
 
 })
