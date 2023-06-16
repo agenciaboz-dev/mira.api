@@ -219,4 +219,16 @@ router.post("/apply_profit_margin", async (request: Request, response: Response)
     response.json(product)
 })
 
+router.get("/fix_cost", async (request: Request, response: Response) => {
+    const products = await prisma.products.findMany()
+
+    products.map(async (product) => {
+        if (product.id >= 55 && product.id <= 864) {
+            await prisma.products.update({ where: { id: product.id }, data: { cost: product.cost / 100 } })
+        }
+    })
+
+    response.send("OK")
+})
+
 export default router
