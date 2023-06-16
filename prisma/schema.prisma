@@ -53,7 +53,7 @@ model addresses {
 model products {
     id              Int         @id @default(autoincrement())
     name            String
-    description     String
+    description     String      @db.Text
     brand           String      @default("")
     stock           Int
     stock_type      Int         @default(0)
