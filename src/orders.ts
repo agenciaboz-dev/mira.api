@@ -141,7 +141,7 @@ router.post("/webhook", async (request, response, next) => {
         client?.connection.send(JSON.stringify(charge))
 
         if (charge.status == "PAID") {
-            await prisma.orders.update({ data: { status: 2 }, where: { id: data.reference_id } })
+            await prisma.orders.update({ data: { status: 2 }, where: { id: Number(data.reference_id) } })
         }
         // console.log(client)
     }
