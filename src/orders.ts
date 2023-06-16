@@ -10,7 +10,10 @@ const router = express.Router()
 const prisma = new PrismaClient()
 
 router.get("/", async (request: Request, response: Response) => {
-    const orders = await prisma.orders.findMany({ include: { address: true, products: true, user: true } })
+    const orders = await prisma.orders.findMany({
+        include: { address: true, products: true, user: true },
+        orderBy: { id: "desc" },
+    })
 
     response.json(orders)
 })
