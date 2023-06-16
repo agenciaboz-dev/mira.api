@@ -18,6 +18,7 @@ router.post("/", async (request: Request, response: Response) => {
                 phone: data.phone,
                 password: data.new_password,
             },
+            include: { addresses: true, cards: true, orders: true },
         })
         response.json(user)
     } else {
@@ -28,6 +29,7 @@ router.post("/", async (request: Request, response: Response) => {
                 email: data.email,
                 phone: data.phone,
             },
+            include: { addresses: true, cards: true, orders: true },
         })
         response.json(user)
     }
