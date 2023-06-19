@@ -83,7 +83,7 @@ router.post("/new", async (request: Request, response: Response) => {
         items: products.map((product) => ({
             name: product.name,
             quantity: product.quantity,
-            unit_amount: Number(product.price.toString().replace(/\D/g, "")),
+            unit_amount: product.price * 100,
         })),
         notification_urls: ["https://app.agenciaboz.com.br:4102/api/orders/webhook"],
     }
@@ -93,7 +93,7 @@ router.post("/new", async (request: Request, response: Response) => {
         pagseguro.order(
             {
                 ...pag_order,
-                qr_codes: [{ amount: { value: Number(total.toString().replace(/\D/g, "")) } }],
+                qr_codes: [{ amount: { value: total * 100 } }],
             },
 
             (pag_response: AxiosResponse) => {
@@ -108,7 +108,7 @@ router.post("/new", async (request: Request, response: Response) => {
                 charges: [
                     {
                         reference_id: order.id.toString(),
-                        amount: { currency: "BRL", value: Number(total.toString().replace(/\D/g, "")) },
+                        amount: { currency: "BRL", value: total * 100 },
                         payment_method: {
                             capture: true,
                             card: {
