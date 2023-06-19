@@ -68,6 +68,7 @@ router.post("/new", async (request: Request, response: Response) => {
             name: data.name,
             cpf: data.cpf,
             value: total,
+            delivery: !!address?.id,
         },
         include: { address: !!address?.id },
     })
