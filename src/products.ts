@@ -29,6 +29,7 @@ router.post("/add", async (request: Request, response: Response) => {
     const imageFile = request.files?.file! as fileUpload.UploadedFile
 
     data.stock = Number(data.stock.toString().replace(/\D/g, ""))
+    data.stock_warehouse = Number(data.stock_warehouse.toString().replace(/\D/g, ""))
     data.price = Number(
         data.price
             .toString()
@@ -144,6 +145,7 @@ router.post("/update", async (request: Request, response: Response) => {
     }
 
     data.stock = Number(data.stock.toString().replace(/\D/g, ""))
+    data.stock_warehouse = Number(data.stock_warehouse.toString().replace(/\D/g, ""))
     data.price = Number(
         data.price
             .toString()
