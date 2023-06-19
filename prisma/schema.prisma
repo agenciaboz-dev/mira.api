@@ -56,10 +56,12 @@ model products {
     description     String      @db.Text
     brand           String      @default("")
     stock           Int
+    stock_warehouse Int         @default(0)
     stock_type      Int         @default(0)
     story           String      @db.Text
     usage           String?     @db.Text
     price           Float
+    profit          Float       @default(25)
     cost            Float       @default(0)
     image           String?     @db.Text
     video           String      @db.Text
