@@ -17,7 +17,7 @@ export const pagseguro = {
         api
             .post("/orders", order, { headers })
             .then((response) => callback(response))
-            .catch((error) => console.log(error.data)),
+            .catch((error) => console.log(error)),
     pixPay: (order: any, callback: Function) =>
         api.post("/pix/pay/" + order.id, { status: "PAID", tx_id: order.id }, { headers }).then((response) => {
             callback(response)
