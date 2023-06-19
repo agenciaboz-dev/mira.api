@@ -89,6 +89,7 @@ router.post("/new", async (request: Request, response: Response) => {
 
     // PIX
     if (data.method == "pix") {
+        console.log(Number((total / 100).toString().replace(/\D/g, "")))
         pagseguro.order(
             {
                 ...pag_order,
