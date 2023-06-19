@@ -76,7 +76,7 @@ router.post("/new", async (request: Request, response: Response) => {
         reference_id: order.id.toString(),
         customer: {
             name: order.name,
-            tax_id: order.cpf,
+            tax_id: order.cpf.replace(/\D/g, ""),
             email: user?.email || "fernando@agenciazop.com.br",
         },
         items: products.map((product) => ({
