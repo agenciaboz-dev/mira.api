@@ -122,7 +122,6 @@ router.post("/add", async (request: Request, response: Response) => {
 router.post("/update", async (request: Request, response: Response) => {
     const data = JSON.parse(request.body.data)
     const imageFile = request.files?.file! as fileUpload.UploadedFile
-    console.log(data)
 
     if (imageFile) {
         const uploadDir = `images/products/${data.id}`
@@ -192,7 +191,6 @@ router.post("/update", async (request: Request, response: Response) => {
     data.preparation = Number(data.preparation.toString().replace(/\D/g, "").replace(",", "."))
 
     const categories: categories[] = data.categories
-    console.log(data)
 
     const product = await prisma.products.update({
         data: {
@@ -211,6 +209,7 @@ router.post("/update", async (request: Request, response: Response) => {
             weight: data.weight,
             width: data.width,
             height: data.height,
+            length: data.length,
             preparation: data.preparation,
             prep_unit: data.prep_unit,
             stock_type: Number(data.stock_type),
