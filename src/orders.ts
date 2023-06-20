@@ -67,9 +67,9 @@ router.post("/new", async (request: Request, response: Response) => {
             name: data.name,
             cpf: data.cpf,
             value: total,
-            delivery: !!address?.id,
+            delivery: !!address?.address,
         },
-        include: { address: !!address?.id },
+        include: { address: !!address?.address },
     })
 
     const orderProducts = await prisma.orderProduct.createMany({
@@ -82,7 +82,7 @@ router.post("/new", async (request: Request, response: Response) => {
 
     const order = await prisma.orders.findUnique({
         where: { id: _order.id },
-        include: { address: !!address?.id, products: { include: { product: true } }, user: true },
+        include: { address: !!address?.address, products: { include: { product: true } }, user: true },
     })
 
     const pag_order = {
