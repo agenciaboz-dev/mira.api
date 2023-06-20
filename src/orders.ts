@@ -175,7 +175,10 @@ router.post("/webhook", async (request, response, next) => {
             sendRefresh("orders")
         } else if (charge.status == "DECLINED") {
             await prisma.orders.update({ data: { status: 1 }, where: { id: Number(data.reference_id) } })
-            sendRefresh("orders")
+            // sendRefresh("orders")
+        } else if (charge.status == "CANCELED") {
+            await prisma.orders.update({ data: { status: 6 }, where: { id: Number(data.reference_id) } })
+            // sendRefresh("orders")
         }
         // console.log(client)
     }
