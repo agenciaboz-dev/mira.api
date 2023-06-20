@@ -72,7 +72,7 @@ model products {
     length          Float       @default(5)
     preparation     Int         @default(1)
     prep_unit       Int         @default(2)
-    orders          orders[]
+    orderProduct    orderProduct[]
     categories      categories[]
     supplier        suppliers?  @relation(fields: [supplier_id], references: [id])
     supplier_id     Int?        @default(1)
@@ -80,7 +80,7 @@ model products {
 
 model orders {
     id              Int         @id @default(autoincrement())
-    products        products[]
+    products        orderProduct[]
     user            users       @relation(fields: [user_id], references: [id])
     user_id         Int
     delivery        Boolean?
@@ -92,6 +92,16 @@ model orders {
     name            String      @default("Teste da Silva")
     cpf             String      @default("00000000000")
     value           Float       @default(0)
+}
+
+model orderProduct {
+    orderId         Int
+    productId       Int
+    quantity        Int
+    order           orders           @relation(fields: [orderId], references: [id])
+    product         products         @relation(fields: [productId], references: [id])
+
+    @@id([orderId, productId])
 }
 
 model pagseguro {
