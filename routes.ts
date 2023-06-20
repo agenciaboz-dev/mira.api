@@ -9,11 +9,17 @@ import orders from "./src/orders"
 import categories from "./src/categories"
 import delivery from "./src/delivery"
 import suppliers from "./src/suppliers"
+import { sendRefresh } from "./src/websocket/socket"
 
 export const router = express.Router()
 
 router.get("/", async (request: Request, response: Response) => {
     response.json({ success: true })
+})
+
+router.get("/refresh_adm", async (request: Request, response: Response) => {
+    sendRefresh("app")
+    response.json({ refresh: "app" })
 })
 
 router.post("/cep", (request, response, next) => {
