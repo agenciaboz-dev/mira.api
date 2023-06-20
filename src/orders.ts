@@ -70,7 +70,7 @@ router.post("/new", async (request: Request, response: Response) => {
             user_id: data.user.id,
             method: data.method,
             status: 0,
-            address_id: data.address?.id || 0,
+            address_id: address?.id || 0,
             name: data.name,
             cpf: data.cpf,
             value: total,
