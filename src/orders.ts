@@ -11,7 +11,7 @@ const prisma = new PrismaClient()
 
 router.get("/", async (request: Request, response: Response) => {
     const orders = await prisma.orders.findMany({
-        include: { address: true, products: true, user: true },
+        include: { address: true, products: { include: { product: true } }, user: true },
         orderBy: { id: "desc" },
     })
 
@@ -23,7 +23,7 @@ router.post("/", async (request: Request, response: Response) => {
 
     const order = await prisma.orders.findUnique({
         where: { id: Number(data.id) },
-        include: { address: true, products: true, user: true },
+        include: { address: true, products: { include: { product: true } }, user: true },
     })
 
     response.json(order)
@@ -80,16 +80,16 @@ router.post("/new", async (request: Request, response: Response) => {
         })),
     })
 
-    const order = (await prisma.orders.findUnique({
+    const order = await prisma.orders.findUnique({
         where: { id: _order.id },
         include: { address: !!address?.id, products: { include: { product: true } }, user: true },
-    })) as orders
+    })
 
     const pag_order = {
-        reference_id: order.id.toString(),
+        reference_id: order!.id.toString(),
         customer: {
-            name: order.name,
-            tax_id: order.cpf.replace(/\D/g, ""),
+            name: order!.name,
+            tax_id: order!.cpf.replace(/\D/g, ""),
             email: user?.email || "fernando@agenciazop.com.br",
         },
         items: products.map((product) => ({
@@ -119,7 +119,7 @@ router.post("/new", async (request: Request, response: Response) => {
                 ...pag_order,
                 charges: [
                     {
-                        reference_id: order.id.toString(),
+                        reference_id: order!.id.toString(),
                         amount: { currency: "BRL", value: total * 100 },
                         payment_method: {
                             capture: true,
