@@ -36,12 +36,6 @@ wsServer.on("connection", (connection) => {
 
         if (data.adm?.id) {
             console.log("new adm")
-            const filtered_adms = adms.filter((adm) => adm.id == data.adm.id)
-
-            if (filtered_adms.length > 0) {
-                adms = adms.filter((adm) => adm.id != data.adm.id)
-            }
-
             adms.push({ ...data.adm, connection })
         }
     })
