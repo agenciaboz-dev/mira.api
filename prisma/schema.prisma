@@ -45,8 +45,8 @@ model addresses {
     district    String
     city        String
     uf          String      @db.Char(2)
-    users       users       @relation(fields: [user], references: [id])
-    user        Int
+    users       users?      @relation(fields: [user], references: [id])
+    user        Int?
     orders      orders[]
 }
 
