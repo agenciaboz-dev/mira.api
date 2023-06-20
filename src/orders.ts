@@ -57,6 +57,7 @@ router.post("/new", async (request: Request, response: Response) => {
     const sentAddress: addresses = data.address
     const products: product[] = data.products
     const total: number = data.total
+    const quotation: Quotation = data.quotation
 
     const address = sentAddress?.id
         ? sentAddress
@@ -70,6 +71,7 @@ router.post("/new", async (request: Request, response: Response) => {
             user_id: data.user.id,
             method: data.method,
             status: 0,
+            frete: quotation?.id.toString(),
             address_id: address?.id || 0,
             name: data.name,
             cpf: data.cpf,
