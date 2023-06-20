@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express"
 import { PrismaClient, addresses, orders, products, users } from "@prisma/client"
-import { clients } from "./websocket/socket"
+import { clients, refreshOrders } from "./websocket/socket"
 import { frete, mira } from "./frete"
 import axios, { AxiosResponse } from "axios"
 import { pagseguro } from "./pagseguro"
@@ -121,6 +121,7 @@ router.post("/new", async (request: Request, response: Response) => {
             (pag_response: AxiosResponse) => {
                 const data = pag_response.data
                 response.json({ pagseguro: data, order })
+                refreshOrders()
             }
         )
     } else if (data.method == "card") {
@@ -151,6 +152,7 @@ router.post("/new", async (request: Request, response: Response) => {
             (pag_response: AxiosResponse) => {
                 const data = pag_response.data
                 response.json({ pagseguro: data, order })
+                refreshOrders()
             }
         )
     }
@@ -170,10 +172,10 @@ router.post("/webhook", async (request, response, next) => {
 
         if (charge.status == "PAID") {
             await prisma.orders.update({ data: { status: 2 }, where: { id: Number(data.reference_id) } })
-
+            refreshOrders()
         } else if (charge.status == "DECLINED") {
             await prisma.orders.update({ data: { status: 1 }, where: { id: Number(data.reference_id) } })
-
+            refreshOrders()
         }
         // console.log(client)
     }

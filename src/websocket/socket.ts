@@ -6,9 +6,18 @@ interface Client {
     connection: WebSocket
 }
 
+interface adm extends users {
+    connection: WebSocket
+}
+
 export let clients: Client[] = []
+export let adms: adm[] = []
 
 export const wsServer = new WebSocketServer({ noServer: true })
+
+export const refreshOrders = () => {
+    adms.map(adm => adm.connection.send(JSON.stringify({refresh: 'orders'})))
+}
 
 wsServer.on("connection", (connection) => {
     // Generate a unique code for every user
@@ -17,7 +26,7 @@ wsServer.on("connection", (connection) => {
         const data = JSON.parse(message.toString())
         // console.log({ websocket: data })
 
-        if (data.order.id) {
+        if (data.order?.id) {
             const filtered_clients = clients.filter((client) => client.order.id == data.id)
 
             if (filtered_clients.length > 0) {
@@ -25,6 +34,10 @@ wsServer.on("connection", (connection) => {
             }
 
             clients.push({ order: data.order, connection })
+        }
+
+        if (data.adm?.id) {
+            adms.push({ ...data.adm, connection })
         }
     })
 })
