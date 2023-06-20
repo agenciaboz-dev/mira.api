@@ -120,7 +120,7 @@ router.post("/new", async (request: Request, response: Response) => {
             async (pag_response: AxiosResponse) => {
                 const data = pag_response.data
                 if (data.error_messages) {
-                    await prisma.orders.update({ where: { id: order!.id }, data: { status: 1 } })
+                    await prisma.orders.update({ where: { id: order!.id }, data: { status: 1, error: data.error_messages.map((error:any) => error.description).toString() } })
                 }
 
                 response.json({ pagseguro: data, order })
@@ -154,9 +154,9 @@ router.post("/new", async (request: Request, response: Response) => {
             async (pag_response: AxiosResponse) => {
                 const data = pag_response.data
                 if (data.error_messages) {
-                    await prisma.orders.update({ where: { id: order!.id }, data: { status: 1 } })
+                    await prisma.orders.update({ where: { id: order!.id }, data: { status: 1, error: data.error_messages.map((error:any) => error.description).toString() } })
                 }
-                
+
                 response.json({ pagseguro: data, order })
             }
         )
