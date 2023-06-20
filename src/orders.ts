@@ -184,7 +184,11 @@ router.post("/webhook", async (request, response, next) => {
 router.post("/close", async (request: Request, response: Response) => {
     const data = request.body
 
-    const order = await prisma.orders.update({ where: { id: data.id }, data: { status: 4 } })
+    const order = await prisma.orders.update({
+        where: { id: data.id },
+        data: { status: 4 },
+        include: { address: true, products: { include: { product: true } }, user: true },
+    })
     response.json(order)
 })
 
