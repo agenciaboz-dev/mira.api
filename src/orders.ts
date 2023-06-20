@@ -196,6 +196,7 @@ router.post("/close", async (request: Request, response: Response) => {
 
 router.get("/send_refresh", async (request: Request, response: Response) => {
     sendRefresh("orders")
+    response.json({ refresh: "orders" })
 })
 
 router.post("/simulate_pay", async (request: Request, response: Response) => {
