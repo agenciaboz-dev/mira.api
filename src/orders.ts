@@ -61,7 +61,8 @@ router.post("/new", async (request: Request, response: Response) => {
     const address = sentAddress?.id
         ? sentAddress
         : sentAddress?.address
-        ? (await axios.post("https://localhost:4102/api/users/address", { new_address: true, ...sentAddress })).data
+        ? (await axios.post("https://app.agenciaboz.com.br:4102/api/users/address", { new_address: true, ...sentAddress }))
+              .data
         : undefined
 
     const _order = await prisma.orders.create({
