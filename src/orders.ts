@@ -47,6 +47,7 @@ router.post("/quotation", async (request: Request, response: Response) => {
 
 router.post("/new", async (request: Request, response: Response) => {
     const data = request.body
+    console.log(data)
     // console.log(data)
 
     interface product extends products {
