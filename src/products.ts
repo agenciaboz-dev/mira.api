@@ -94,6 +94,7 @@ router.post("/add", async (request: Request, response: Response) => {
             weight: data.weight,
             width: data.width,
             height: data.height,
+            length: data.length,
             preparation: data.preparation,
             prep_unit: data.prep_unit,
             stock_type: Number(data.stock_type),
