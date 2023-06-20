@@ -37,6 +37,7 @@ wsServer.on("connection", (connection) => {
         }
 
         if (data.adm?.id) {
+            console.log("new adm")
             adms.push({ ...data.adm, connection })
         }
     })
