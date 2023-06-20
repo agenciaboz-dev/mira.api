@@ -63,7 +63,6 @@ router.post("/new", async (request: Request, response: Response) => {
             user_id: data.user.id,
             method: data.method,
             status: 0,
-            products: { connect: products.map((product) => ({ id: product.id })) },
             address_id: data.address?.id || 0,
             name: data.name,
             cpf: data.cpf,
@@ -71,6 +70,14 @@ router.post("/new", async (request: Request, response: Response) => {
             delivery: !!address?.id,
         },
         include: { address: !!address?.id },
+    })
+
+    const orderProducts = await prisma.orderProduct.createMany({
+        data: products.map((product) => ({
+            orderId: order.id,
+            productId: product.id,
+            quantity: product.quantity, // assuming you have quantity in the products array
+        })),
     })
 
     const pag_order = {
