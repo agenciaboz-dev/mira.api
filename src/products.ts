@@ -219,6 +219,7 @@ router.post("/update", async (request: Request, response: Response) => {
         include: { categories: true, supplier: true },
     })
 
+    console.log(product)
     response.json(product)
 })
 
