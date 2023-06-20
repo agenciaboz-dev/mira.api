@@ -84,6 +84,7 @@ model orders {
     user            users       @relation(fields: [user_id], references: [id])
     user_id         Int
     delivery        Boolean?
+    frete           String?
     status          Int         @default(0)
     date            DateTime    @default(now())
     method          String?
