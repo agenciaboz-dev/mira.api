@@ -1,5 +1,8 @@
 import axios from "axios"
 import { Order } from "./definitions/pagseguro"
+import { PrismaClient } from "@prisma/client"
+
+const prisma = new PrismaClient()
 
 const api = axios.create({
     baseURL: "https://api.pagseguro.com",
@@ -17,7 +20,16 @@ export const pagseguro = {
         api
             .post("/orders", order, { headers })
             .then((response) => callback(response))
-            .catch((error) => console.log(error.response.data)),
+            .catch(async (error) => {
+                console.log(error.response.data)
+                await prisma.orders.update({
+                    where: { id: Number(order.reference_id) },
+                    data: {
+                        status: 1,
+                        error: error.response.data.error_messages.map((error: any) => error.description).toString(),
+                    },
+                })
+            }),
     pixPay: (order: any, callback: Function) =>
         api.post("/pix/pay/" + order.id, { status: "PAID", tx_id: order.id }, { headers }).then((response) => {
             callback(response)
