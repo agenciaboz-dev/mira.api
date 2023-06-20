@@ -1,5 +1,5 @@
 import express, { Express, Request, Response } from "express"
-import { PrismaClient, addresses, products, users } from "@prisma/client"
+import { PrismaClient, addresses, orders, products, users } from "@prisma/client"
 import { clients } from "./websocket/socket"
 import { frete, mira } from "./frete"
 import { AxiosResponse } from "axios"
@@ -58,7 +58,7 @@ router.post("/new", async (request: Request, response: Response) => {
     const products: product[] = data.products
     const total: number = data.total
 
-    const order = await prisma.orders.create({
+    const _order = await prisma.orders.create({
         data: {
             user_id: data.user.id,
             method: data.method,
@@ -74,11 +74,16 @@ router.post("/new", async (request: Request, response: Response) => {
 
     const orderProducts = await prisma.orderProduct.createMany({
         data: products.map((product) => ({
-            orderId: order.id,
+            orderId: _order.id,
             productId: product.id,
             quantity: product.quantity, // assuming you have quantity in the products array
         })),
     })
+
+    const order = (await prisma.orders.findUnique({
+        where: { id: _order.id },
+        include: { address: !!address?.id, products: true, user: true },
+    })) as orders
 
     const pag_order = {
         reference_id: order.id.toString(),
