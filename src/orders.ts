@@ -82,7 +82,7 @@ router.post("/new", async (request: Request, response: Response) => {
 
     const order = (await prisma.orders.findUnique({
         where: { id: _order.id },
-        include: { address: !!address?.id, products: true, user: true },
+        include: { address: !!address?.id, products: { include: { product: true } }, user: true },
     })) as orders
 
     const pag_order = {
