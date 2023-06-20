@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express"
 import { PrismaClient, addresses, orders, products, users } from "@prisma/client"
-import { clients, refreshOrders } from "./websocket/socket"
+import { clients, sendRefresh } from "./websocket/socket"
 import { frete, mira } from "./frete"
 import axios, { AxiosResponse } from "axios"
 import { pagseguro } from "./pagseguro"
@@ -121,7 +121,7 @@ router.post("/new", async (request: Request, response: Response) => {
             (pag_response: AxiosResponse) => {
                 const data = pag_response.data
                 response.json({ pagseguro: data, order })
-                refreshOrders()
+                sendRefresh("orders")
             }
         )
     } else if (data.method == "card") {
@@ -152,7 +152,7 @@ router.post("/new", async (request: Request, response: Response) => {
             (pag_response: AxiosResponse) => {
                 const data = pag_response.data
                 response.json({ pagseguro: data, order })
-                refreshOrders()
+                sendRefresh("orders")
             }
         )
     }
@@ -172,10 +172,10 @@ router.post("/webhook", async (request, response, next) => {
 
         if (charge.status == "PAID") {
             await prisma.orders.update({ data: { status: 2 }, where: { id: Number(data.reference_id) } })
-            refreshOrders()
+            sendRefresh("orders")
         } else if (charge.status == "DECLINED") {
             await prisma.orders.update({ data: { status: 1 }, where: { id: Number(data.reference_id) } })
-            refreshOrders()
+            sendRefresh("orders")
         }
         // console.log(client)
     }
@@ -192,6 +192,10 @@ router.post("/close", async (request: Request, response: Response) => {
         include: { address: true, products: { include: { product: true } }, user: true },
     })
     response.json(order)
+})
+
+router.get("/send_refresh", async (request: Request, response: Response) => {
+    sendRefresh("orders")
 })
 
 router.post("/simulate_pay", async (request: Request, response: Response) => {

@@ -15,13 +15,11 @@ export let adms: adm[] = []
 
 export const wsServer = new WebSocketServer({ noServer: true })
 
-export const refreshOrders = () => {
-    adms.map(adm => adm.connection.send(JSON.stringify({refresh: 'orders'})))
+export const sendRefresh = (object: "orders" | "products" | "suppliers" | "categories") => {
+    adms.map((adm) => adm.connection.send(JSON.stringify({ refresh: object })))
 }
 
 wsServer.on("connection", (connection) => {
-    // Generate a unique code for every user
-
     connection.on("message", (message) => {
         const data = JSON.parse(message.toString())
         console.log({ websocket: data })
