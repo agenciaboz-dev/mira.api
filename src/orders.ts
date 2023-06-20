@@ -181,6 +181,13 @@ router.post("/webhook", async (request, response, next) => {
     response.json({ message: "teste" })
 })
 
+router.post("/close", async (request: Request, response: Response) => {
+    const data = request.body
+
+    const order = await prisma.orders.update({ where: { id: data.id }, data: { status: 4 } })
+    response.json(order)
+})
+
 router.post("/simulate_pay", async (request: Request, response: Response) => {
     const data = request.body
 })
