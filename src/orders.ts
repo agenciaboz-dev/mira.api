@@ -61,7 +61,7 @@ router.post("/new", async (request: Request, response: Response) => {
     const address = sentAddress?.id
         ? sentAddress
         : sentAddress?.address
-        ? (await axios.post("https://app.agenciaboz.com.br:4102/api/users/address", { new_address: true, ...sentAddress }))
+        ? (await axios.post("https://app.agenciaboz.com.br:4102/api/user/address", { new_address: true, ...sentAddress }))
               .data
         : undefined
 
