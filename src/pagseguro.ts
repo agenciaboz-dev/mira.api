@@ -25,7 +25,7 @@ export const pagseguro = {
                 await prisma.orders.update({
                     where: { id: Number(order.reference_id) },
                     data: {
-                        status: 1,
+                        status: 5,
                         error: error.response.data.error_messages.map((error: any) => error.description).toString(),
                     },
                 })
