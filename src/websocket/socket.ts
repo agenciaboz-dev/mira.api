@@ -24,7 +24,7 @@ wsServer.on("connection", (connection) => {
 
     connection.on("message", (message) => {
         const data = JSON.parse(message.toString())
-        // console.log({ websocket: data })
+        console.log({ websocket: data })
 
         if (data.order?.id) {
             const filtered_clients = clients.filter((client) => client.order.id == data.id)
