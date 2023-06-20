@@ -117,8 +117,12 @@ router.post("/new", async (request: Request, response: Response) => {
                 qr_codes: [{ amount: { value: total * 100 } }],
             },
 
-            (pag_response: AxiosResponse) => {
+            async (pag_response: AxiosResponse) => {
                 const data = pag_response.data
+                if (data.error_messages) {
+                    await prisma.orders.update({ where: { id: order!.id }, data: { status: 1 } })
+                }
+
                 response.json({ pagseguro: data, order })
             }
         )
@@ -147,8 +151,12 @@ router.post("/new", async (request: Request, response: Response) => {
                 ],
             },
 
-            (pag_response: AxiosResponse) => {
+            async (pag_response: AxiosResponse) => {
                 const data = pag_response.data
+                if (data.error_messages) {
+                    await prisma.orders.update({ where: { id: order!.id }, data: { status: 1 } })
+                }
+                
                 response.json({ pagseguro: data, order })
             }
         )
