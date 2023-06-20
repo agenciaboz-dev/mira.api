@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from "express"
 import { PrismaClient, addresses, orders, products, users } from "@prisma/client"
 import { clients } from "./websocket/socket"
 import { frete, mira } from "./frete"
-import { AxiosResponse } from "axios"
+import axios, { AxiosResponse } from "axios"
 import { pagseguro } from "./pagseguro"
 import { writeFileSync } from "fs"
 
@@ -54,9 +54,15 @@ router.post("/new", async (request: Request, response: Response) => {
     }
 
     const user: users = data.user
-    const address: addresses = data.address
+    const sentAddress: addresses = data.address
     const products: product[] = data.products
     const total: number = data.total
+
+    const address = sentAddress?.id
+        ? sentAddress
+        : sentAddress?.address
+        ? (await axios.post("https://localhost:4102/api/users/address", { new_address: true, ...sentAddress })).data
+        : undefined
 
     const _order = await prisma.orders.create({
         data: {
@@ -67,9 +73,9 @@ router.post("/new", async (request: Request, response: Response) => {
             name: data.name,
             cpf: data.cpf,
             value: total,
-            delivery: !!address?.address,
+            delivery: !!address?.id,
         },
-        include: { address: !!address?.address },
+        include: { address: !!address?.id },
     })
 
     const orderProducts = await prisma.orderProduct.createMany({
@@ -82,7 +88,7 @@ router.post("/new", async (request: Request, response: Response) => {
 
     const order = await prisma.orders.findUnique({
         where: { id: _order.id },
-        include: { address: !!address?.address, products: { include: { product: true } }, user: true },
+        include: { address: !!address?.id, products: { include: { product: true } }, user: true },
     })
 
     const pag_order = {
