@@ -15,8 +15,8 @@ export let adms: adm[] = []
 
 export const wsServer = new WebSocketServer({ noServer: true })
 
-export const sendRefresh = (object: "orders" | "products" | "suppliers" | "categories" | "app") => {
-    adms.map((adm) => adm.connection.send(JSON.stringify({ refresh: object })))
+export const sendRefresh = (object: "orders" | "products" | "suppliers" | "categories" | "app", time = 60) => {
+    adms.map((adm) => adm.connection.send(JSON.stringify({ refresh: object, time: time * 1000 })))
 }
 
 wsServer.on("connection", (connection) => {

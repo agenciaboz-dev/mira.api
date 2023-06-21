@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from 'express'
+import { sendRefresh } from "./src/websocket/socket"
 import viacep from "./src/viacep"
 import login from "./src/login"
 import signup from "./src/signup"
@@ -9,7 +10,7 @@ import orders from "./src/orders"
 import categories from "./src/categories"
 import delivery from "./src/delivery"
 import suppliers from "./src/suppliers"
-import { sendRefresh } from "./src/websocket/socket"
+import tools from "./src/tools"
 
 export const router = express.Router()
 
@@ -39,3 +40,4 @@ router.use("/orders", orders)
 router.use("/categories", categories)
 router.use("/delivery", delivery)
 router.use("/suppliers", suppliers)
+router.use("/tools", tools)
