@@ -6,6 +6,7 @@ const prisma = new PrismaClient()
 
 router.post("/reload_page", async (request: Request, response: Response) => {
     const data = request.body
+    console.log(data)
 
     sendRefresh("app", data.time)
     response.json({ refresh: "app", time: data.time || 60 })
