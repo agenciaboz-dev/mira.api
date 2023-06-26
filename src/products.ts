@@ -24,6 +24,16 @@ router.post("/", async (request: Request, response: Response) => {
     response.json(product)
 })
 
+router.post("/name", async (request: Request, response: Response) => {
+    const data = request.body
+
+    const product = await prisma.products.findMany({
+        where: { name: { contains: data.name } },
+        include: { categories: true, supplier: true },
+    })
+    response.json(product)
+})
+
 router.post("/add", async (request: Request, response: Response) => {
     const data = JSON.parse(request.body.data)
     const imageFile = request.files?.file! as fileUpload.UploadedFile
