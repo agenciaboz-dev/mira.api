@@ -58,6 +58,7 @@ model products {
     stock           Int
     stock_warehouse Int         @default(0)
     stock_type      Int         @default(0)
+    shelf           String?
     story           String      @db.Text
     usage           String?     @db.Text
     price           Float
