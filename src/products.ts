@@ -211,7 +211,7 @@ router.post("/update", async (request: Request, response: Response) => {
             }
 
             const filepath = join(uploadDir, file.name)
-            gallery_string += `https://app.agenciaboz.com.br:4102/${filepath}`
+            gallery_string += `,https://app.agenciaboz.com.br:4102/${filepath}`
 
             file.mv(filepath, (err) => {
                 if (err) {
