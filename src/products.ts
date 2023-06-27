@@ -41,39 +41,28 @@ router.post("/add", async (request: Request, response: Response) => {
     const gallery = Object.entries(request.files || [])
         .filter(([key, value]) => key.split("gallery-").length > 1)
         .map(([key, value]) => value)
-
-    let gallery_string = ""
+    
+    const gallery_list: string[] = []
 
     if (gallery.length > 0) {
         const uploadDir = `images/products/${data.id}`
-        const moveOperations = gallery.map((item) => {
-            return new Promise((resolve, reject) => {
-                const file = item as fileUpload.UploadedFile
-                if (!existsSync(uploadDir)) {
-                    mkdirSync(uploadDir, { recursive: true })
+
+        gallery.map((item) => {
+            const file = item as fileUpload.UploadedFile
+
+            if (!existsSync(uploadDir)) {
+                mkdirSync(uploadDir, { recursive: true })
+            }
+
+            const filepath = join(uploadDir, file.name)
+            gallery_list.push(`https://app.agenciaboz.com.br:4102/${filepath}`)
+
+            file.mv(filepath, (err) => {
+                if (err) {
+                    console.log(err)
                 }
-
-                const filepath = join(uploadDir, file.name)
-
-                file.mv(filepath, (err) => {
-                    if (err) {
-                        console.log(err)
-                        reject(err) // Reject the promise if there's an error
-                    } else {
-                        resolve(filepath) // Resolve the promise with the path to the file
-                    }
-                })
             })
         })
-
-        Promise.all(moveOperations)
-            .then(async () => {
-                const images = readdirSync(uploadDir)
-                gallery_string = images
-                    .map((file) => `https://app.agenciaboz.com.br:4102/images/products/${data.id}/${file}`)
-                    .toString()
-            })
-            .catch((err) => console.error(err))
     }
 
     data.stock = Number(data.stock.toString().replace(/\D/g, ""))
@@ -137,7 +126,7 @@ router.post("/add", async (request: Request, response: Response) => {
             cost: data.cost,
             stock: data.stock,
             image: data.image,
-            gallery: gallery_string,
+            gallery: gallery_list.toString(),
             video: data.video,
             story: data.story,
             usage: data.usage,
