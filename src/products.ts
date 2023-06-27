@@ -199,10 +199,11 @@ router.post("/update", async (request: Request, response: Response) => {
         .filter(([key, value]) => key.split("gallery-").length > 1)
         .map(([key, value]) => value)
     
-    let gallery_string = data.gallery || ""
+    const gallery_list = data.gallery?.split(",") || []
 
     if (gallery.length > 0) {
         const uploadDir = `images/products/${data.id}`
+
         gallery.map((item) => {
             const file = item as fileUpload.UploadedFile
 
@@ -211,7 +212,7 @@ router.post("/update", async (request: Request, response: Response) => {
             }
 
             const filepath = join(uploadDir, file.name)
-            gallery_string += `,https://app.agenciaboz.com.br:4102/${filepath}`
+            gallery_list.push(`https://app.agenciaboz.com.br:4102/${filepath}`)
 
             file.mv(filepath, (err) => {
                 if (err) {
@@ -280,7 +281,7 @@ router.post("/update", async (request: Request, response: Response) => {
             cost: data.cost,
             stock: data.stock,
             stock_warehouse: data.stock_warehouse,
-            gallery: gallery_string,
+            gallery: gallery_list.toString(),
             shelf: data.shelf,
             video: data.video,
             usage: data.usage,
