@@ -65,6 +65,7 @@ model products {
     profit          Float       @default(25)
     cost            Float       @default(0)
     image           String?     @db.Text
+    gallery         String?     @db.Text
     video           String      @db.Text
     specifications  String      @db.Text
     weight          Float       @default(5)
