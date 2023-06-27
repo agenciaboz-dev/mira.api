@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express"
 import { PrismaClient, categories } from "@prisma/client"
 import fileUpload from "express-fileupload"
-import { existsSync, mkdirSync } from "fs"
+import { existsSync, mkdirSync, readdirSync } from "fs"
 import { join } from "path"
 const router = express.Router()
 const prisma = new PrismaClient()
@@ -144,7 +144,7 @@ router.post("/update", async (request: Request, response: Response) => {
         const filepath = join(uploadDir, imageFile.name)
 
         imageFile.mv(filepath, (err) => {
-            console.log(err)
+            if (err) console.log(err)
         })
 
         const imageProduct = await prisma.products.update({
@@ -154,6 +154,46 @@ router.post("/update", async (request: Request, response: Response) => {
             where: { id: data.id },
             include: { categories: true, supplier: true },
         })
+    }
+
+    const gallery = Object.entries(request.files || [])
+        .filter(([key, value]) => key.split("gallery-").length > 1)
+        .map(([key, value]) => value)
+
+    if (gallery.length > 0) {
+        const uploadDir = `images/products/${data.id}`
+        const moveOperations = gallery.map((item) => {
+            return new Promise((resolve, reject) => {
+                const file = item as fileUpload.UploadedFile
+                if (!existsSync(uploadDir)) {
+                    mkdirSync(uploadDir, { recursive: true })
+                }
+
+                const filepath = join(uploadDir, file.name)
+
+                file.mv(filepath, (err) => {
+                    if (err) {
+                        console.log(err)
+                        reject(err) // Reject the promise if there's an error
+                    } else {
+                        resolve(filepath) // Resolve the promise with the path to the file
+                    }
+                })
+            })
+        })
+
+        Promise.all(moveOperations)
+            .then(async () => {
+                const images = readdirSync(uploadDir)
+                await prisma.products.update({
+                    data: {
+                        gallery: images.map((file) => `https://app.agenciaboz.com.br:4102/${file}`).toString(),
+                    },
+                    where: { id: data.id },
+                    include: { categories: true, supplier: true },
+                })
+            })
+            .catch((err) => console.error(err))
     }
 
     data.stock = Number(data.stock.toString().replace(/\D/g, ""))
