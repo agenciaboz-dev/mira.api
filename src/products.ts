@@ -187,7 +187,9 @@ router.post("/update", async (request: Request, response: Response) => {
                 const images = readdirSync(uploadDir)
                 await prisma.products.update({
                     data: {
-                        gallery: images.map((file) => `https://app.agenciaboz.com.br:4102/${file}`).toString(),
+                        gallery: images
+                            .map((file) => `https://app.agenciaboz.com.br:4102/images/products/${data.id}/${file}`)
+                            .toString(),
                     },
                     where: { id: data.id },
                     include: { categories: true, supplier: true },
