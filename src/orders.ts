@@ -54,6 +54,19 @@ router.post("/quotation", async (request: Request, response: Response) => {
     )
 })
 
+router.post("/reviews/cancel", async (request: Request, response: Response) => {
+    const data = request.body
+
+    const order = await prisma.orders.update({
+        where: {id:Number(data.id)},
+            data: {
+                review: true
+            }
+    })
+
+    response.json(order)
+})
+
 router.post("/new", async (request: Request, response: Response) => {
     const data = request.body
     console.log(data)
