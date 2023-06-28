@@ -96,6 +96,7 @@ model orders {
     cpf             String      @default("00000000000")
     value           Float       @default(0)
     error           String?     @db.Text
+    review          Boolean     @default(false)
 }
 
 model orderProduct {
