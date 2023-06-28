@@ -16,7 +16,7 @@ router.post('/', async (request:Request, response:Response) => {
                 password: data.password,
             },
         },
-        include: { addresses: true, cards: true, orders: true },
+        include: { addresses: true, cards: true, orders: {include: {products: {include: {product: true}}}} },
     })
 
     response.json(user)
