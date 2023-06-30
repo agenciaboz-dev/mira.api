@@ -97,6 +97,7 @@ model orders {
     value           Float       @default(0)
     error           String?     @db.Text
     review          Boolean     @default(false)
+    rating          Int         @default(0)
 }
 
 model orderProduct {
