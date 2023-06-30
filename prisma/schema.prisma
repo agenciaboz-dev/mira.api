@@ -78,6 +78,7 @@ model products {
     categories      categories[]
     supplier        suppliers?  @relation(fields: [supplier_id], references: [id])
     supplier_id     Int?        @default(1)
+    rating          Int         @default(0)
 }
 
 model orders {
@@ -97,7 +98,6 @@ model orders {
     value           Float       @default(0)
     error           String?     @db.Text
     review          Boolean     @default(false)
-    rating          Int         @default(0)
 }
 
 model orderProduct {
