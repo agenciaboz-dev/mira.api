@@ -67,6 +67,41 @@ router.post("/reviews/cancel", async (request: Request, response: Response) => {
     response.json(order)
 })
 
+router.post("/reviews/send", async (request: Request, response: Response) => {
+    const data = request.body
+
+    interface ratingProduct extends products {
+        new_rating: number
+    }
+
+    const products:ratingProduct[] = data.products
+    const newProducts:products[] = []
+
+    products.map( async(product) => {
+        const ratings = product.ratings + 1
+        const rating = ((product.rating * product.ratings) + product.new_rating)/ratings
+
+        const newProduct = await prisma.products.update({
+            where: {id:Number(product.id)},
+            data: {
+                rating: rating,
+                ratings: ratings
+            }
+        })
+
+        newProducts.push(newProduct)
+    })
+
+    const order = await prisma.orders.update({
+        where: {id:Number(data.id)},
+            data: {
+                review: true
+            }
+    })
+
+    response.json(newProducts)
+})
+
 router.post("/new", async (request: Request, response: Response) => {
     const data = request.body
     console.log(data)
