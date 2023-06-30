@@ -79,6 +79,7 @@ model products {
     supplier        suppliers?  @relation(fields: [supplier_id], references: [id])
     supplier_id     Int?        @default(1)
     rating          Int         @default(0)
+    ratings         Int         @default(0)
 }
 
 model orders {
