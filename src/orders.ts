@@ -215,6 +215,7 @@ router.post("/new", async (request: Request, response: Response) => {
     }
 })
 
+// webhook for pagseguro
 router.post("/webhook", async (request, response, next) => {
     const data = request.body
 
