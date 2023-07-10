@@ -80,6 +80,8 @@ model products {
     supplier_id     Int?        @default(1)
     rating          Int         @default(0)
     ratings         Int         @default(0)
+    ncm             String      @default("")
+    aliquot         Int         @default(0)
 }
 
 model orders {
