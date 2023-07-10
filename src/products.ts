@@ -41,7 +41,7 @@ router.post("/add", async (request: Request, response: Response) => {
     const gallery = Object.entries(request.files || [])
         .filter(([key, value]) => key.split("gallery-").length > 1)
         .map(([key, value]) => value)
-    
+
     const gallery_list: string[] = []
 
     if (gallery.length > 0) {
@@ -120,6 +120,8 @@ router.post("/add", async (request: Request, response: Response) => {
             brand: data.brand,
             supplier_id: data.supplier_id,
             price: data.price,
+            ncm: data.ncm,
+            aliquot: data.aliquot,
             profit: data.profit,
             stock_warehouse: data.stock_warehouse,
             shelf: data.shelf,
@@ -187,7 +189,7 @@ router.post("/update", async (request: Request, response: Response) => {
     const gallery = Object.entries(request.files || [])
         .filter(([key, value]) => key.split("gallery-").length > 1)
         .map(([key, value]) => value)
-    
+
     const gallery_list = data.gallery?.split(",") || []
 
     if (gallery.length > 0) {
@@ -266,6 +268,8 @@ router.post("/update", async (request: Request, response: Response) => {
             brand: data.brand,
             supplier_id: data.supplier_id,
             price: data.price,
+            ncm: data.ncm,
+            aliquot: data.aliquot,
             profit: data.profit,
             cost: data.cost,
             stock: data.stock,
