@@ -119,7 +119,8 @@ router.get("/ws", async (request: Request, response: Response) => {
   response.json(clients)
 })
 
-router.post("/password-recovery", async (request: Request, response: Response) => {
+
+router.post("/password-recovery", async (request, response) => {
   const { email } = request.body;
 
   const user = await prisma.users.findUnique({
@@ -131,16 +132,15 @@ router.post("/password-recovery", async (request: Request, response: Response) =
   }
 
   const token = Math.random().toString(36).slice(-10);
-  const recoveryLink = `localhost:3000/password-reset?token=${token}`;
-  // https://app.mirasuprimentos.com.br/password-reset?token=${token}`;
+  const recoveryLink = `https://app.agenciaboz.com.br:4202/api/user/password-recovery?token=${token}`;
 
   const transporter = nodemailer.createTransport({
     host: 'mail.cooperativasion.com.br',
     port: 25,
-    secure: true,
+    secure: false,
     auth: {
       user: 'noreply@cooperativasion.com.br',
-      pass: '2Fc2K[TXT?C'
+      pass: ',2Fc2K[TXT?C', 
     }
   });
 
@@ -156,13 +156,14 @@ router.post("/password-recovery", async (request: Request, response: Response) =
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      console.log(error);
-      response.status(500).json({ error: "Ocorreu um erro ao enviar o e-mail de recuperação de senha." });
+      console.error(error); 
+      response.status(500).json({ error });
     } else {
       response.json({ success: true });
     }
   });
 });
+
 
 
 router.post("/password-reset", async (request: Request, response: Response) => {
