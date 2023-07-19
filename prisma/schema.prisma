@@ -20,6 +20,7 @@ model users {
     addresses   addresses[]
     cards       cards[]
     orders      orders[]
+    token       String  @default("")
 }
 
 model cards {
