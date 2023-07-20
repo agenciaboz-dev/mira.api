@@ -1,14 +1,14 @@
-import express, { Express, Request, Response } from "express"
-import { PrismaClient } from "@prisma/client"
-import { clients } from "./websocket/socket"
-import nodemailer from 'nodemailer';
+import express, { Express, Request, Response } from "express";
+import { PrismaClient } from "@prisma/client";
+import { clients } from "./websocket/socket";
+import nodemailer from "nodemailer";
 
-const router = express.Router()
-const prisma = new PrismaClient()
+const router = express.Router();
+const prisma = new PrismaClient();
 
 router.post("/", async (request: Request, response: Response) => {
-  const data = request.body
-  console.log({ change_password: data.change_password })
+  const data = request.body;
+  console.log({ change_password: data.change_password });
 
   if (data.change_password) {
     const user = await prisma.users.update({
@@ -20,8 +20,8 @@ router.post("/", async (request: Request, response: Response) => {
         password: data.new_password,
       },
       include: { addresses: true, cards: true, orders: true },
-    })
-    response.json(user)
+    });
+    response.json(user);
   } else {
     const user = await prisma.users.update({
       where: { id: data.id },
@@ -31,14 +31,14 @@ router.post("/", async (request: Request, response: Response) => {
         phone: data.phone,
       },
       include: { addresses: true, cards: true, orders: true },
-    })
-    response.json(user)
+    });
+    response.json(user);
   }
-})
+});
 
 router.post("/address", async (request: Request, response: Response) => {
-  const data = request.body
-  console.log(data)
+  const data = request.body;
+  console.log(data);
 
   if (data.new_address) {
     const address = await prisma.addresses.create({
@@ -54,9 +54,9 @@ router.post("/address", async (request: Request, response: Response) => {
         uf: data.uf,
         user: data.user_id,
       },
-    })
+    });
 
-    response.json(address)
+    response.json(address);
   } else {
     const address = await prisma.addresses.update({
       data: {
@@ -72,15 +72,15 @@ router.post("/address", async (request: Request, response: Response) => {
       },
 
       where: { id: data.id },
-    })
+    });
 
-    response.json(address)
+    response.json(address);
   }
-})
+});
 
 router.post("/card", async (request: Request, response: Response) => {
-  const data = request.body
-  console.log(data)
+  const data = request.body;
+  console.log(data);
 
   if (data.new_card) {
     const card = await prisma.cards.create({
@@ -93,9 +93,9 @@ router.post("/card", async (request: Request, response: Response) => {
         type: data.type,
         user: data.user_id,
       },
-    })
+    });
 
-    response.json(card)
+    response.json(card);
   } else {
     const card = await prisma.cards.update({
       data: {
@@ -109,16 +109,15 @@ router.post("/card", async (request: Request, response: Response) => {
       },
 
       where: { id: data.id },
-    })
+    });
 
-    response.json(card)
+    response.json(card);
   }
-})
+});
 
 router.get("/ws", async (request: Request, response: Response) => {
-  response.json(clients)
-})
-
+  response.json(clients);
+});
 
 router.post("/password-recovery", async (request, response) => {
   const { email } = request.body;
@@ -135,13 +134,17 @@ router.post("/password-recovery", async (request, response) => {
   const recoveryLink = `https://app.agenciaboz.com.br:4202/api/user/password-recovery?token=${token}`;
 
   const transporter = nodemailer.createTransport({
-    host: 'mail.cooperativasion.com.br',
+    host: "mail.cooperativasion.com.br",
     port: 25,
-    secure: true,
+    secure: false,
     auth: {
-      user: 'noreply@cooperativasion.com.br',
-      pass: ',2Fc2K[TXT?C', 
-    }
+      user: "noreply@cooperativasion.com.br",
+      pass: ",2Fc2K[TXT?C",
+    },
+    tls: {
+      // do not fail on invalid certs
+      rejectUnauthorized: false,
+    },
   });
 
   const mailOptions = {
@@ -156,15 +159,13 @@ router.post("/password-recovery", async (request, response) => {
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      console.error(error); 
+      console.error(error);
       response.status(500).json({ error });
     } else {
       response.json({ success: true });
     }
   });
 });
-
-
 
 router.post("/password-reset", async (request: Request, response: Response) => {
   const { token, password } = request.body;
@@ -189,5 +190,4 @@ router.post("/password-reset", async (request: Request, response: Response) => {
   response.json({ message: "Senha redefinida com sucesso.", updatedUser });
 });
 
-
-export default router
+export default router;
