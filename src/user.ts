@@ -137,7 +137,7 @@ router.post("/password-recovery", async (request, response) => {
   const transporter = nodemailer.createTransport({
     host: 'mail.cooperativasion.com.br',
     port: 25,
-    secure: false,
+    secure: true,
     auth: {
       user: 'noreply@cooperativasion.com.br',
       pass: ',2Fc2K[TXT?C', 
