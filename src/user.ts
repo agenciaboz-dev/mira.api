@@ -131,7 +131,7 @@ router.post("/password-recovery", async (request, response) => {
   }
 
   const token = Math.random().toString(36).slice(-10);
-  const recoveryLink = `http://localhost:3000/password-reset/:token`;
+  const recoveryLink = `http://localhost:3000/password-reset/${token}`;
 
   const transporter = nodemailer.createTransport({
     host: "mail.cooperativasion.com.br",
