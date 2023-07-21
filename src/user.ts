@@ -169,7 +169,7 @@ router.post("/password-recovery", async (request, response) => {
 
 router.post("/password-reset", async (request: Request, response: Response) => {
   const { token, password } = request.body;
-
+  console.log({ token});
   const user = await prisma.users.findFirst({
     where: {
       token: { equals: token },
