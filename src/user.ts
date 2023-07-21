@@ -184,6 +184,7 @@ router.post("/password-reset", async (request: Request, response: Response) => {
     where: { id: user.id },
     data: {
       password,
+      token: undefined,
     },
   });
 
