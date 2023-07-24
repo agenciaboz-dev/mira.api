@@ -5,7 +5,6 @@ import { frete, mira } from "./frete"
 import axios, { AxiosResponse } from "axios"
 import { pagseguro } from "./pagseguro"
 import { writeFileSync } from "fs"
-import { nfe } from "./nfe"
 
 const router = express.Router()
 const prisma = new PrismaClient()
@@ -59,10 +58,10 @@ router.post("/reviews/cancel", async (request: Request, response: Response) => {
     const data = request.body
 
     const order = await prisma.orders.update({
-        where: { id: Number(data.id) },
-        data: {
-            review: true,
-        },
+        where: {id:Number(data.id)},
+            data: {
+                review: true
+            }
     })
 
     response.json(order)
@@ -75,29 +74,29 @@ router.post("/reviews/send", async (request: Request, response: Response) => {
         new_rating: number
     }
 
-    const products: ratingProduct[] = data.products
-    const newProducts: products[] = []
+    const products:ratingProduct[] = data.products
+    const newProducts:products[] = []
 
-    products.map(async (product) => {
+    products.map( async(product) => {
         const ratings = product.ratings + 1
-        const rating = (product.rating * product.ratings + product.new_rating) / ratings
+        const rating = ((product.rating * product.ratings) + product.new_rating)/ratings
 
         const newProduct = await prisma.products.update({
-            where: { id: Number(product.id) },
+            where: {id:Number(product.id)},
             data: {
                 rating: rating,
-                ratings: ratings,
-            },
+                ratings: ratings
+            }
         })
 
         newProducts.push(newProduct)
     })
 
     const order = await prisma.orders.update({
-        where: { id: Number(data.id) },
-        data: {
-            review: true,
-        },
+        where: {id:Number(data.id)},
+            data: {
+                review: true
+            }
     })
 
     response.json(newProducts)
@@ -105,7 +104,7 @@ router.post("/reviews/send", async (request: Request, response: Response) => {
 
 router.post("/new", async (request: Request, response: Response) => {
     const data = request.body
-    console.log(JSON.stringify(data))
+    console.log(data)
     // console.log(data)
 
     interface product extends products {
@@ -121,7 +120,8 @@ router.post("/new", async (request: Request, response: Response) => {
     const address = sentAddress?.id
         ? sentAddress
         : sentAddress?.address
-        ? (await axios.post("https://app.agenciaboz.com.br:4102/api/user/address", { new_address: true, ...sentAddress })).data
+        ? (await axios.post("https://app.agenciaboz.com.br:4102/api/user/address", { new_address: true, ...sentAddress }))
+              .data
         : undefined
 
     const _order = await prisma.orders.create({
@@ -213,8 +213,6 @@ router.post("/new", async (request: Request, response: Response) => {
             }
         )
     }
-
-    nfe.create(order!)
 })
 
 // webhook for pagseguro

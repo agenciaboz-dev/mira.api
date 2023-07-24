@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios"
+import axios from "axios"
 import { PrismaClient, addresses, orderProduct, orders, products, users } from "@prisma/client"
 
 const prisma = new PrismaClient()
@@ -85,8 +85,6 @@ export const nfe = {
             })),
         }
 
-        console.log(JSON.stringify(data))
-
-        api.post(`/v2/nfe?ref=${order.id}`, data).then((response: AxiosResponse) => console.log(response.data))
+        api.post(`/v2/nfe?ref=${order.id}`, data)
     },
 }
