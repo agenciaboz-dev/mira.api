@@ -11,6 +11,7 @@ import categories from "./src/categories"
 import delivery from "./src/delivery"
 import suppliers from "./src/suppliers"
 import tools from "./src/tools"
+import webhook from "./src/webhook"
 
 export const router = express.Router()
 
@@ -41,3 +42,4 @@ router.use("/categories", categories)
 router.use("/delivery", delivery)
 router.use("/suppliers", suppliers)
 router.use("/tools", tools)
+router.use("/webhook", webhook)
