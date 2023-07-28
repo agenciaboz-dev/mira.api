@@ -76,7 +76,7 @@ export const nfe = {
                 valor_unitario_comercial: item.product.price,
                 valor_unitario_tributavel: item.product.price,
                 unidade_tributavel: "un",
-                codigo_ncm: item.product.ncm,
+                codigo_ncm: item.product.ncm.replace(/\D/g, ""),
                 quantidade_tributavel: item.quantity,
                 valor_bruto: item.product.price * item.quantity,
                 icms_origem: 0,
