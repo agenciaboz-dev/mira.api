@@ -8,8 +8,7 @@ const api = axios.create({
     timeout: 1000 * 10,
 })
 
-// const token = "070B295159854F84A2358971995B2C6E" // sandbox
-const token = "f5f3ebec-cfbd-4f67-9ead-d42902381641864fbe9140cfb82a8005b4f5c049c336d7c7-7333-4f2a-bb46-3df8d5a282f9"
+const token = "eFoJq6pfpZqIZ5l5iSBcxXzGj0UyyJq0" // sandbox
 
 const headers = { Authorization: token }
 
@@ -23,7 +22,10 @@ export const nfe = {
             user: users
         }
     ) => {
+        const validProducts = order.products.filter((item) => item.product.ncm)
         const data = {
+            token,
+
             natureza_operacao: "Venda de mercadoria adquirida de terceiros",
             data_emissao: new Date().toISOString().split("T")[0],
             data_entrada_saida: new Date().toISOString().split("T")[0],
@@ -64,8 +66,8 @@ export const nfe = {
             cofins_valor: order.value * (3 / 100),
             modalidade_frete: 0,
 
-            items: order.products.map((item) => ({
-                numero_item: order.products.indexOf(item) + 1,
+            items: validProducts.map((item) => ({
+                numero_item: validProducts.indexOf(item) + 1,
                 codigo_produto: item.product.id,
                 descricao: item.product.name,
                 cfop: 5102,
@@ -80,13 +82,21 @@ export const nfe = {
                 icms_origem: 0,
                 icms_situacao_tributaria: "00",
                 cofins_situacao_tributaria: "01",
+                pis_situacao_tributaria: "01",
                 icms_base_calculo: item.product.price * item.quantity,
-                icms_valor_total: item.product.price * item.quantity * (1 + item.product.aliquot / 100),
+                icms_aliquota: item.product.aliquot,
+                icms_valor: item.product.price * item.quantity * (item.product.aliquot / 100),
+                icms_modalidade_base_calculo: 3,
             })),
         }
 
-        console.log(JSON.stringify(data))
+        // console.log(JSON.stringify(data))
 
-        api.post(`/v2/nfe?ref=${order.id}`, data).then((response: AxiosResponse) => console.log(response.data))
+        api.post(`/v2/nfe?ref=${order.id}`, data)
+            .then((response: AxiosResponse) => console.log(response.data))
+            .catch((error) => {
+                console.log(error.response.data.erros || error.response.data)
+                console.log(JSON.stringify(data))
+            })
     },
 }

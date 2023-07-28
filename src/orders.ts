@@ -105,7 +105,7 @@ router.post("/reviews/send", async (request: Request, response: Response) => {
 
 router.post("/new", async (request: Request, response: Response) => {
     const data = request.body
-    console.log(JSON.stringify(data))
+    // console.log(JSON.stringify(data))
     // console.log(data)
 
     interface product extends products {
