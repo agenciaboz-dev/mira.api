@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios"
 import { PrismaClient, addresses, orderProduct, orders, products, users } from "@prisma/client"
+import { sendRefresh } from "./websocket/socket"
 
 const prisma = new PrismaClient()
 
@@ -98,6 +99,7 @@ export const nfe = {
                     where: { id: order.id },
                     data: { nfe: JSON.stringify(response.data.status) },
                 })
+                sendRefresh("orders")
             })
 
             .catch(async (error) => {
@@ -107,6 +109,7 @@ export const nfe = {
                     where: { id: order.id },
                     data: { nfe: JSON.stringify(error.response.data.erros || error.response.data) },
                 })
+                sendRefresh("orders")
             })
     },
 }

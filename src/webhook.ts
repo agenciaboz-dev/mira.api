@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express"
 import { PrismaClient } from "@prisma/client"
+import { sendRefresh } from "./websocket/socket"
 const router = express.Router()
 const prisma = new PrismaClient()
 
@@ -18,6 +19,8 @@ router.post("/nfe", async (request: Request, response: Response) => {
             data: { nfe: data.status },
         })
     }
+
+    sendRefresh("orders")
 })
 
 export default router
