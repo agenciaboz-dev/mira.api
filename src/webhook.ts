@@ -8,12 +8,12 @@ router.post("/nfe", async (request: Request, response: Response) => {
     console.log(data)
 
     if (data.status == "autorizado") {
-        prisma.orders.update({
+        await prisma.orders.update({
             where: { id: Number(data.ref) },
             data: { nfe: `https://api.focusnfe.com.br${data.caminho_danfe}` },
         })
     } else {
-        prisma.orders.update({
+        await prisma.orders.update({
             where: { id: Number(data.ref) },
             data: { nfe: data.status },
         })
