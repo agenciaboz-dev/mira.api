@@ -82,6 +82,7 @@ model products {
     ratings         Int         @default(0)
     ncm             String      @default("")
     aliquot         Int         @default(0)
+    nfe             String?     @db.Text
 }
 
 model orders {
