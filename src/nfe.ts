@@ -93,10 +93,20 @@ export const nfe = {
         // console.log(JSON.stringify(data))
 
         api.post(`/v2/nfe?ref=${order.id}`, data)
-            .then((response: AxiosResponse) => console.log(response.data))
+            .then((response: AxiosResponse) => {
+                prisma.orders.update({
+                    where: { id: order.id },
+                    data: { nfe: JSON.stringify(response.data.status) },
+                })
+            })
+
             .catch((error) => {
                 console.log(error.response.data.erros || error.response.data)
                 console.log(JSON.stringify(data))
+                prisma.orders.update({
+                    where: { id: order.id },
+                    data: { nfe: JSON.stringify(error.response.data.erros || error.response.data) },
+                })
             })
     },
 }
