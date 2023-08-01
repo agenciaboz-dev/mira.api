@@ -82,7 +82,6 @@ model products {
     ratings         Int         @default(0)
     ncm             String      @default("")
     aliquot         Int         @default(0)
-    nfe             String?     @db.Text
 }
 
 model orders {
@@ -102,6 +101,7 @@ model orders {
     value           Float       @default(0)
     error           String?     @db.Text
     review          Boolean     @default(false)
+    nfe             String?     @db.Text
 }
 
 model orderProduct {
