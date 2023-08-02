@@ -23,11 +23,7 @@ export const pagseguro = {
             .then((response) => {
                 callback(response)
 
-                const log = {
-                    request: response.request,
-                    response,
-                }
-                writeFileSync("log.txt", JSON.stringify(log, null, 4))
+                writeFileSync("log.txt", JSON.stringify(response.data, null, 4))
             })
             .catch(async (error) => {
                 console.log(error.response.data)
