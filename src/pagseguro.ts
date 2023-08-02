@@ -1,6 +1,7 @@
 import axios from "axios"
 import { Order } from "./definitions/pagseguro"
 import { PrismaClient } from "@prisma/client"
+import { writeFileSync } from "fs"
 
 const prisma = new PrismaClient()
 
@@ -19,7 +20,15 @@ export const pagseguro = {
     order: (order: Order, callback: Function) =>
         api
             .post("/orders", order, { headers })
-            .then((response) => callback(response))
+            .then((response) => {
+                callback(response)
+
+                const log = {
+                    request: response.request,
+                    response,
+                }
+                writeFileSync("log.txt", JSON.stringify(log, null, 4))
+            })
             .catch(async (error) => {
                 console.log(error.response.data)
                 await prisma.orders.update({
@@ -34,6 +43,7 @@ export const pagseguro = {
         api.post("/pix/pay/" + order.id, { status: "PAID", tx_id: order.id }, { headers }).then((response) => {
             callback(response)
         }),
+
     get: (order: any, callback: Function) =>
         api.get("/orders/" + order.id, { headers }).then((response) => {
             callback(response)
