@@ -1,5 +1,6 @@
 node_modules
 images
 dist/
+logs/
 # Keep environment variables out of version control
 # .env
