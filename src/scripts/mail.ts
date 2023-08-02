@@ -2,12 +2,12 @@ import nodemailer from "nodemailer"
 import Mail from "nodemailer/lib/mailer"
 
 const transporter = nodemailer.createTransport({
-    host: "mail.cooperativasion.com.br",
+    host: "mail.agenciaboz.com.br",
     port: 25,
     secure: false,
     auth: {
-        user: "noreply@cooperativasion.com.br",
-        pass: ",2Fc2K[TXT?C",
+        user: "pedido@app.mirasuprimentos.com.br",
+        pass: "4B@4FgLhCs^=",
     },
     tls: {
         // do not fail on invalid certs
@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendMail = async (destination: string, subject: string, text?: string, html?: string) => {
     const mailOptions: Mail.Options = {
-        from: "Cooperativa Sion <noreply@cooperativasion.com.br>",
+        from: "Mira Suprimentos <pedidos@app.mirasuprimentos.com.br>",
         to: destination,
         subject,
         html,

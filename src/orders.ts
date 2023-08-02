@@ -6,6 +6,7 @@ import axios, { AxiosResponse } from "axios"
 import { pagseguro } from "./pagseguro"
 import { writeFileSync } from "fs"
 import { nfe } from "./nfe"
+import { sendMail } from "./scripts/mail"
 
 const router = express.Router()
 const prisma = new PrismaClient()
@@ -213,6 +214,8 @@ router.post("/new", async (request: Request, response: Response) => {
             }
         )
     }
+
+    sendMail(order!.user.email, "Novo pedido", `Novo pedido ${order?.id}`)
 })
 
 // webhook for pagseguro
