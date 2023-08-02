@@ -17,6 +17,7 @@ router.post("/", async (request: Request, response: Response) => {
                 username: data.username,
                 phone: data.phone,
                 cpf: data.cpf,
+                pronoun: data.pronoun,
             },
         })
         console.log(user)
