@@ -2,7 +2,7 @@ import nodemailer from "nodemailer"
 import Mail from "nodemailer/lib/mailer"
 
 const transporter = nodemailer.createTransport({
-    host: "mail.agenciaboz.com.br",
+    host: "mail.app.mirasuprimentos.com.br",
     port: 25,
     secure: false,
     auth: {
