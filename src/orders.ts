@@ -213,8 +213,6 @@ router.post("/new", async (request: Request, response: Response) => {
             }
         )
     }
-
-    nfe.create(order!)
 })
 
 // webhook for pagseguro
@@ -233,7 +231,12 @@ router.post("/webhook", async (request, response, next) => {
         writeFileSync("logs/webhook.txt", JSON.stringify(data, null, 4))
 
         if (charge.status == "PAID") {
-            await prisma.orders.update({ data: { status: 2 }, where: { id: Number(data.reference_id) } })
+            const order = await prisma.orders.update({
+                data: { status: 2 },
+                where: { id: Number(data.reference_id) },
+                include: { address: true, products: { include: { product: true } }, user: true },
+            })
+            nfe.create(order!)
             sendRefresh("orders")
         } else if (charge.status == "DECLINED") {
             await prisma.orders.update({ data: { status: 1 }, where: { id: Number(data.reference_id) } })
