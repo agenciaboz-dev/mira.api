@@ -230,6 +230,8 @@ router.post("/webhook", async (request, response, next) => {
 
         console.log(charge)
 
+        writeFileSync("logs/webhook.txt", JSON.stringify(data, null, 4))
+
         if (charge.status == "PAID") {
             await prisma.orders.update({ data: { status: 2 }, where: { id: Number(data.reference_id) } })
             sendRefresh("orders")
