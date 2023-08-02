@@ -27,10 +27,10 @@ export const pagseguro = {
                     request: response.request,
                     response,
                 }
-                console.log(log)
-                writeFile("log.txt", JSON.stringify(log, null, 4), (error) => {
-                    if (error) console.log(error)
-                })
+                // console.log(log)
+                // writeFile("log.txt", JSON.stringify(log, null, 4), (error) => {
+                //     if (error) console.log(error)
+                // })
             })
             .catch(async (error) => {
                 console.log(error.response.data)
