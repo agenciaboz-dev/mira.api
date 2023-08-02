@@ -27,6 +27,7 @@ export const pagseguro = {
                     request: response.request,
                     response,
                 }
+                console.log(log)
                 writeFileSync("log.txt", JSON.stringify(log, null, 4))
             })
             .catch(async (error) => {
