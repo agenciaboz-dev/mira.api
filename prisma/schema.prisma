@@ -17,6 +17,7 @@ model users {
     phone       String      @default("")
     adm         Boolean     @default(false)
     cpf         String      @default("02576698506")
+    pronoun     String      @default("Você")
     addresses   addresses[]
     cards       cards[]
     orders      orders[]
