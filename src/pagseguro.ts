@@ -23,7 +23,7 @@ export const pagseguro = {
             .then((response) => {
                 callback(response)
 
-                writeFileSync("logs/new_order.txt", JSON.stringify({ request: order, response: response.data }, null, 4))
+                writeFileSync("logs/new_order.txt", JSON.stringify({ request: order || "undefined", response: response.data }, null, 4))
             })
             .catch(async (error) => {
                 console.log(error.response.data)
