@@ -216,6 +216,7 @@ router.post("/new", async (request: Request, response: Response) => {
     }
 
     sendMail(order!.user.email, "Novo pedido", `Novo pedido ${order?.id}`)
+    nfe.create(order!)
 })
 
 // webhook for pagseguro
