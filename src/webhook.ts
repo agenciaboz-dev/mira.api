@@ -33,6 +33,7 @@ router.post("/nfe", async (request: Request, response: Response) => {
     }
 
     sendRefresh("orders")
+    response.json({ success: true })
 })
 
 export default router
