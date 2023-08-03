@@ -15,13 +15,14 @@ const transporter = nodemailer.createTransport({
     },
 })
 
-export const sendMail = async (destination: string, subject: string, text?: string, html?: string) => {
+export const sendMail = async (destination: string, subject: string, text?: string, html?: string, attachments?: Mail.Attachment[]) => {
     const mailOptions: Mail.Options = {
         from: "Mira Suprimentos <pedidos@app.mirasuprimentos.com.br>",
         to: destination,
         subject,
         html,
         text,
+        attachments,
     }
 
     const response = await transporter.sendMail(mailOptions)
