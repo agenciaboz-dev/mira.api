@@ -1,6 +1,9 @@
 import express, { Express, Request, Response } from "express"
 import { PrismaClient } from "@prisma/client"
 import { clients } from "./websocket/socket"
+import { sendMail } from "./scripts/mail"
+import { decrypt, encrypt } from "./scripts/hash"
+import { passwordTemplate } from "./templates/mail/password"
 
 const router = express.Router()
 const prisma = new PrismaClient()
@@ -116,6 +119,40 @@ router.post("/card", async (request: Request, response: Response) => {
 
 router.get("/ws", async (request: Request, response: Response) => {
     response.json(clients)
+})
+
+router.post("/recover", async (request: Request, response: Response) => {
+    const data = request.body.user
+
+    const user = await prisma.users.findFirst({ where: { OR: [{ email: data }, { cpf: data }, { username: data }] } })
+    if (user) {
+        const hash = encrypt(user.id)
+        console.log(hash)
+        sendMail(user.email, "Recuperação de senha", "recuperar senha", passwordTemplate(user, hash))
+    }
+
+    response.json(user)
+})
+
+router.post("/password", async (request: Request, response: Response) => {
+    const data = request.body
+
+    const user = await prisma.users.update({
+        where: { id: data.id },
+        data: { password: data.password },
+    })
+
+    response.json(user)
+})
+
+router.post("/hash", async (request: Request, response: Response) => {
+    const data = request.body.hash
+
+    const id = decrypt(data)
+    console.log(id)
+    const user = await prisma.users.findUnique({ where: { id } })
+
+    response.json(user)
 })
 
 export default router
