@@ -1,7 +1,7 @@
 import axios from "axios"
 import { Order } from "./definitions/pagseguro"
 import { PrismaClient } from "@prisma/client"
-import { writeFileSync } from "fs"
+import { existsSync, mkdirSync, writeFileSync } from "fs"
 
 const prisma = new PrismaClient()
 
@@ -23,7 +23,11 @@ export const pagseguro = {
             .then((response) => {
                 callback(response)
 
-                writeFileSync("logs/new_order.txt", JSON.stringify("teste", null, 4))
+                if (!existsSync("logs")) {
+                    mkdirSync("logs")
+                }
+
+                writeFileSync("logs/new_order.txt", JSON.stringify({ request: order || "undefined", response: response.data }, null, 4))
             })
             .catch(async (error) => {
                 console.log(error.response.data)
