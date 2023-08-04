@@ -201,7 +201,7 @@ router.post("/new", async (request: Request, response: Response) => {
                                 store: false,
                             },
                             installments: 1,
-                            type: "CREDIT_CARD",
+                            type: data.card.type == "debit" ? "DEBIT_CARD" : "CREDIT_CARD",
                         },
                     },
                 ],
