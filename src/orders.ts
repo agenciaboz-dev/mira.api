@@ -7,6 +7,7 @@ import { pagseguro } from "./pagseguro"
 import { writeFileSync } from "fs"
 import { nfe } from "./nfe"
 import { sendMail } from "./scripts/mail"
+import { newOrderTemplate } from "./templates/mail/new_order"
 
 const router = express.Router()
 const prisma = new PrismaClient()
@@ -215,7 +216,7 @@ router.post("/new", async (request: Request, response: Response) => {
         )
     }
 
-    sendMail(order!.user.email, "Novo pedido", `Novo pedido ${order?.id}`)
+    sendMail(order!.user.email, "Novo pedido", `Novo pedido ${order?.id}`, newOrderTemplate(order!))
 })
 
 // webhook for pagseguro
