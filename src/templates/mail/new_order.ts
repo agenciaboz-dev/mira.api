@@ -14,7 +14,7 @@ export const newOrderTemplate = (order: orders&{user:users}) => `
                                     ${order.user.name}
                                 </p>
                                 <p style="font-size: 2em;font-family: sans-serif;">
-                                    Seu novo pedido foi recebido: ${order.id}
+                                    Seu novo pedido foi recebido. ID: ${order.id}
                                     <br>
                                     Obrigado!
                                 </p>
