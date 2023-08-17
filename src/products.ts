@@ -23,7 +23,7 @@ router.get("/", async (request: Request, response: Response) => {
         )
     )
 
-    const products = list.map((item) => ({ ...item }))
+    const products = list.flat()
 
     // const productsList = await prisma.products.findMany({
     //     include: { categories: true, supplier: true },
@@ -60,8 +60,7 @@ router.post("/name", async (request: Request, response: Response) => {
         )
     )
 
-    const products = list.map((item) => ({ ...item }))
-
+    const products = list.flat()
 
     // const product = await prisma.products.findMany({
     //     where: { name: { contains: data.name } },
