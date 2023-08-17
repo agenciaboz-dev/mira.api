@@ -11,7 +11,7 @@ router.get("/", async (request: Request, response: Response) => {
     const count = Array.from({ length: Math.floor(total / 100) }, (_, i) => i + 1)
     const batch = 100
 
-    const products = await Promise.all(
+    const list = await Promise.all(
         count.map(
             async (index) =>
                 await prisma.products.findMany({
@@ -22,6 +22,8 @@ router.get("/", async (request: Request, response: Response) => {
                 })
         )
     )
+
+    const products = list.map((item) => ({ ...item }))
 
     // const productsList = await prisma.products.findMany({
     //     include: { categories: true, supplier: true },
@@ -46,7 +48,7 @@ router.post("/name", async (request: Request, response: Response) => {
     const count = Array.from({ length: Math.floor(total / 100) }, (_, i) => i + 1)
     const batch = 100
 
-    const products = await Promise.all(
+    const list = await Promise.all(
         count.map(
             async (index) =>
                 await prisma.products.findMany({
@@ -57,6 +59,9 @@ router.post("/name", async (request: Request, response: Response) => {
                 })
         )
     )
+
+    const products = list.map((item) => ({ ...item }))
+
 
     // const product = await prisma.products.findMany({
     //     where: { name: { contains: data.name } },
