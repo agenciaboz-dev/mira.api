@@ -8,7 +8,7 @@ const prisma = new PrismaClient()
 
 router.get("/", async (request: Request, response: Response) => {
     const total = await prisma.products.count()
-    const count = Array.from({ length: Math.floor(total / 100) }, (_, i) => i)
+    const count = Array.from({ length: Math.floor(total / 100) + 1 }, (_, i) => i)
     console.log(total)
     const batch = 100
 
@@ -46,7 +46,7 @@ router.post("/", async (request: Request, response: Response) => {
 router.post("/name", async (request: Request, response: Response) => {
     const data = request.body
     const total = await prisma.products.count()
-    const count = Array.from({ length: Math.floor(total / 100) }, (_, i) => i)
+    const count = Array.from({ length: Math.floor(total / 100) + 1 }, (_, i) => i)
     const batch = 100
 
     const list = await Promise.all(
