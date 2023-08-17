@@ -1,5 +1,5 @@
 import express, { Express, Request, Response } from "express"
-import { PrismaClient, categories } from "@prisma/client"
+import { PrismaClient, categories, products } from "@prisma/client"
 import fileUpload from "express-fileupload"
 import { existsSync, mkdirSync, readdirSync } from "fs"
 import { join } from "path"
@@ -7,10 +7,26 @@ const router = express.Router()
 const prisma = new PrismaClient()
 
 router.get("/", async (request: Request, response: Response) => {
-    const products = await prisma.products.findMany({
-        include: { categories: true, supplier: true },
-        orderBy: { id: "asc" },
-    })
+    const total = await prisma.products.count()
+    const count = Array.from({ length: Math.floor(total / 100) }, (_, i) => i + 1)
+    const batch = 100
+
+    const products = await Promise.all(
+        count.map(
+            async (index) =>
+                await prisma.products.findMany({
+                    include: { categories: true, supplier: true },
+                    orderBy: { id: "asc" },
+                    skip: index * batch,
+                    take: batch,
+                })
+        )
+    )
+
+    // const productsList = await prisma.products.findMany({
+    //     include: { categories: true, supplier: true },
+    //     orderBy: { id: "asc" },
+    // })
     response.json(products)
 })
 
@@ -26,12 +42,27 @@ router.post("/", async (request: Request, response: Response) => {
 
 router.post("/name", async (request: Request, response: Response) => {
     const data = request.body
+    const total = await prisma.products.count()
+    const count = Array.from({ length: Math.floor(total / 100) }, (_, i) => i + 1)
+    const batch = 100
 
-    const product = await prisma.products.findMany({
-        where: { name: { contains: data.name } },
-        include: { categories: true, supplier: true },
-    })
-    response.json(product)
+    const products = await Promise.all(
+        count.map(
+            async (index) =>
+                await prisma.products.findMany({
+                    where: { name: { contains: data.name } },
+                    include: { categories: true, supplier: true },
+                    skip: index * batch,
+                    take: batch,
+                })
+        )
+    )
+
+    // const product = await prisma.products.findMany({
+    //     where: { name: { contains: data.name } },
+    //     include: { categories: true, supplier: true },
+    // })
+    response.json(products)
 })
 
 router.post("/add", async (request: Request, response: Response) => {
