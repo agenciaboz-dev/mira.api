@@ -124,7 +124,7 @@ router.get("/ws", async (request: Request, response: Response) => {
 router.post("/recover", async (request: Request, response: Response) => {
     const data = request.body.user
 
-    const user = await prisma.users.findFirst({ where: { OR: [{ email: data }, { cpf: data }, { username: data }] } })
+    const user = await prisma.users.findFirst({ where: { OR: [{ email: data }, { cpf: data }, { username: data }], AND: { deleted: false } } })
     if (user) {
         const hash = encrypt(user.id)
         console.log(hash)
@@ -152,6 +152,13 @@ router.post("/hash", async (request: Request, response: Response) => {
     console.log(id)
     const user = await prisma.users.findUnique({ where: { id } })
 
+    response.json(user)
+})
+
+router.post("/delete", async (request: Request, response: Response) => {
+    const data = request.body
+
+    const user = await prisma.users.update({ where: { id: data.id }, data: { deleted: true } })
     response.json(user)
 })
 

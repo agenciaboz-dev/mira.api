@@ -12,11 +12,9 @@ router.post('/', async (request:Request, response:Response) => {
     const user = await prisma.users.findFirst({
         where: {
             OR: [{ username: data.user }, { email: data.user }],
-            AND: {
-                password: data.password,
-            },
+            AND: [{ password: data.password }, { deleted: false }],
         },
-        include: { addresses: true, cards: true, orders: {include: {products: {include: {product: true}}}} },
+        include: { addresses: true, cards: true, orders: { include: { products: { include: { product: true } } } } },
     })
 
     response.json(user)
@@ -31,7 +29,7 @@ router.post("/adm", async (request: Request, response: Response) => {
     const user = await prisma.users.findFirst({
         where: {
             OR: [{ username: data.user }, { email: data.user }],
-            AND: [{ password: data.password }, { adm: true }],
+            AND: [{ password: data.password }, { adm: true }, { deleted: false }],
         },
     })
 
