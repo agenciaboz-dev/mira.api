@@ -18,6 +18,7 @@ model users {
     adm         Boolean     @default(false)
     cpf         String      @default("02576698506")
     pronoun     String      @default("Você")
+    deleted     Boolean     @default(false)
     addresses   addresses[]
     cards       cards[]
     orders      orders[]
