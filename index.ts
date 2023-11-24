@@ -28,7 +28,7 @@ try {
         {
             key: fs.readFileSync("/etc/letsencrypt/live/app.agenciaboz.com.br/privkey.pem", "utf8"),
             cert: fs.readFileSync("/etc/letsencrypt/live/app.agenciaboz.com.br/cert.pem", "utf8"),
-            ca: fs.readFileSync("/etc/letsencrypt/live/app.agenciaboz.com.br/chain.pem", "utf8"),
+            ca: fs.readFileSync("/etc/letsencrypt/live/app.agenciaboz.com.br/fullchain.pem", "utf8")
         },
         app
     )
@@ -42,7 +42,8 @@ try {
             wsServer.emit("connection", socket, request)
         })
     })
-} catch {
+} catch(e) {
+    console.log(e)
     const server = http.createServer(app)
 
     server.listen(port, () => {
